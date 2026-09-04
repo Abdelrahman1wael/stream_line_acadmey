@@ -401,13 +401,52 @@
     };
 
     // ==========================================
-    // 3. APP STATE
+    // 3. KIDS ADVENTURE STAGES & TROPHIES
     // ==========================================
+    const KIDS_ADVENTURE_STAGES = [
+        { id: 1, surahNumber: 112, surahName: "سُورَةُ الإِخْلَاصِ", title: "نَجْمُ الإِخْلَاصِ", icon: "🌟", ayahsCount: 4, desc: "رَتِّبْ آيَاتِ التَّوْحِيدِ الأَرْبَع" },
+        { id: 2, surahNumber: 108, surahName: "سُورَةُ الْكَوْثَرِ", title: "نَهْرُ الْكَوْثَرِ", icon: "💧", ayahsCount: 3, desc: "أَقْصَرُ سُوَرِ الْقُرْآنِ الْعَظِيم" },
+        { id: 3, surahNumber: 110, surahName: "سُورَةُ النَّصْرِ", title: "رَايَةُ النَّصْرِ", icon: "🏆", ayahsCount: 3, desc: "بِشَارَةُ الْفَتْحِ وَالنَّصْرِ الْمُبِين" },
+        { id: 4, surahNumber: 113, surahName: "سُورَةُ الْفَلَقِ", title: "دِرْعُ الْفَلَقِ", icon: "🛡️", ayahsCount: 5, desc: "تَعَلَّمِ الْمُعَوِّذَتَيْنِ لِلْحِمَايَةِ" },
+        { id: 5, surahNumber: 114, surahName: "سُورَةُ النَّاسِ", title: "حِصْنُ النَّاسِ", icon: "🕊️", ayahsCount: 6, desc: "خَاتِمَةُ الْمُصْحَفِ الشَّرِيفِ الْمُبَارَكَة" },
+        { id: 6, surahNumber: 103, surahName: "سُورَةُ الْعَصْرِ", title: "سَفِينَةُ الْعَصْرِ", icon: "⏳", ayahsCount: 3, desc: "آيَاتُ الصَّبْرِ وَالإِيمَانِ وَالْعَمَل" },
+        { id: 7, surahNumber: 1, surahName: "سُورَةُ الْفَاتِحَةِ", title: "أُمُّ الْكِتَابِ", icon: "📖", ayahsCount: 7, desc: "السَّبْعُ الْمَثَانِي وَأَعْظَمُ السُّوَر" }
+    ];
+
+    const KIDS_TROPHIES = [
+        { id: "first_win", icon: "🌟", title: "نَجْمُ الْبِدَايَةِ", desc: "رَتِّبْ أَوَّلَ آيَةٍ بِشَكْلٍ صَحِيحٍ!" },
+        { id: "streak_3", icon: "🔥", title: "شُعْلَةُ الْحَمَاسِ", desc: "حَقِّقْ سِلْسِلَةَ 3 إِجَابَاتٍ مُتَتَالِيَةٍ صَحِيحَةٍ!" },
+        { id: "stage_clear", icon: "🏆", title: "بَطَلُ الْمَرْحَلَةِ", desc: "أَكْمِلْ جَمِيعَ آيَاتِ سُورَةٍ كَامِلَةٍ!" },
+        { id: "hint_master", icon: "🪄", title: "الْمُسْتَكْشِفُ الذَّكِيُّ", desc: "اسْتَخْدِمِ الْمُسَاعَدَةَ السِّحْرِيَّةَ لِتَخَطِّي الصُّعُوبَةِ!" },
+        { id: "perfectionist", icon: "✨", title: "سَيِّدُ الإِتْقَانِ", desc: "أَنْهِ مَرْحَلَةً كَامِلَةً دُونَ فُقْدَانِ أَيِّ قَلْبٍ!" },
+        { id: "quran_champion", icon: "👑", title: "تَاجُ حُفَّاظِ الْقُرْآنِ", desc: "أَكْمِلْ كَافَّةَ مَرَاحِلِ مُغَامَرَةِ الأَبْطَالِ!" }
+    ];
+
+    // ==========================================
+    // 4. APP STATE
+    // ==========================================
+    let activeMode = localStorage.getItem('quran_game_mode') || 'game'; // 'game' (Kids Adventure) or 'free'
+    let currentStageIndex = parseInt(localStorage.getItem('quran_current_stage_idx') || '0', 10);
+    if (isNaN(currentStageIndex) || currentStageIndex < 0 || currentStageIndex >= KIDS_ADVENTURE_STAGES.length) {
+        currentStageIndex = 0;
+    }
+
+    let hearts = 3;
+    const maxHearts = 3;
+    let magicHintsLeft = 3;
+    let comboStreak = 0;
+    let lostHeartsInCurrentStage = 0;
+    let soundEnabled = (localStorage.getItem('quran_game_sound') !== 'false');
+
+    let unlockedStages = JSON.parse(localStorage.getItem('quran_game_stages') || '[1]');
+    let stageStars = JSON.parse(localStorage.getItem('quran_game_stars') || '{}');
+    let unlockedTrophies = JSON.parse(localStorage.getItem('quran_game_trophies') || '[]');
+
     let currentJuzNumber = 30; // Default to Juz 30 (Al-Ikhlas)
-    let currentSurahNumber = 112; // Surah Al-Ikhlas
-    let currentAyahNumber = 1; // Ayah 1
+    let currentSurahNumber = KIDS_ADVENTURE_STAGES[currentStageIndex].surahNumber;
+    let currentAyahNumber = 1;
     let currentAyahData = null;
-    let currentScore = 70; // 70 points matching user screenshot
+    let currentScore = parseInt(localStorage.getItem('quran_game_score') || '70', 10);
     let currentTheme = localStorage.getItem('quran_game_theme') || 'theme-boys';
     let isSolved = false;
 
@@ -419,13 +458,22 @@
     let isDraggingTouch = false;
 
     // ==========================================
-    // 4. DOM ELEMENTS
+    // 5. DOM ELEMENTS
     // ==========================================
     const bodyEl = document.body;
     const btnThemeBoys = document.getElementById('btn-theme-boys');
     const btnThemeGirls = document.getElementById('btn-theme-girls');
 
-    // Sidebar Elements
+    // Mode Switcher Elements
+    const btnModeGame = document.getElementById('btn-mode-game');
+    const btnModeFree = document.getElementById('btn-mode-free');
+    const btnSoundToggle = document.getElementById('btn-sound-toggle');
+    const soundIcon = document.getElementById('sound-icon');
+    const btnOpenTrophies = document.getElementById('btn-open-trophies');
+    const trophiesBadgeCount = document.getElementById('trophies-badge-count');
+    const floatingPointsContainer = document.getElementById('floating-points-container');
+
+    // Sidebar & Navigation Elements
     const btnToggleSidebar = document.getElementById('btn-toggle-sidebar');
     const btnCloseSidebar = document.getElementById('btn-close-sidebar');
     const juzSidebar = document.getElementById('juz-sidebar');
@@ -435,11 +483,25 @@
     const currentJuzBadge = document.getElementById('current-juz-badge');
     const filterTags = document.querySelectorAll('.filter-tag');
 
-    // Navigation Dropdowns
+    // Kids Stages Trigger & Selectors
+    const btnOpenStages = document.getElementById('btn-open-stages');
+    const currentStageTitle = document.getElementById('current-stage-title');
+    const freeSelectorsGroup = document.getElementById('free-selectors-group');
     const surahSelect = document.getElementById('surah-select');
     const ayahSelect = document.getElementById('ayah-select');
 
-    // Header Badges
+    // Kids Game HUD Bar
+    const kidsGameHud = document.getElementById('kids-game-hud');
+    const heartsContainer = document.getElementById('hearts-container');
+    const hudStageName = document.getElementById('hud-stage-name');
+    const hudStageStep = document.getElementById('hud-stage-step');
+    const hudProgressFill = document.getElementById('hud-progress-fill');
+    const comboStreakBadge = document.getElementById('combo-streak-badge');
+    const streakNum = document.getElementById('streak-num');
+    const btnMagicHint = document.getElementById('btn-magic-hint');
+    const hintCountPill = document.getElementById('hint-count-pill');
+
+    // Header Badges & Mascot
     const badgeSurah = document.getElementById('badge-surah');
     const badgeAyah = document.getElementById('badge-ayah');
     const scoreVal = document.getElementById('score-val');
@@ -464,11 +526,26 @@
     const celebrationMessage = document.getElementById('celebration-message');
     const celebrationVerseText = document.getElementById('celebration-verse-text');
     const celebrationVerseRef = document.getElementById('celebration-verse-ref');
+    const celebrationRewardText = document.getElementById('celebration-reward-text');
     const btnCelebrationNext = document.getElementById('btn-celebration-next');
     const btnCelebrationListen = document.getElementById('btn-celebration-listen');
 
+    // Stages Map Modal
+    const stagesModal = document.getElementById('stages-modal');
+    const btnCloseStages = document.getElementById('btn-close-stages');
+    const stagesGrid = document.getElementById('stages-grid');
+
+    // Trophies Modal
+    const trophiesModal = document.getElementById('trophies-modal');
+    const btnCloseTrophies = document.getElementById('btn-close-trophies');
+    const trophiesGrid = document.getElementById('trophies-grid');
+
+    // Game Over Modal
+    const gameoverModal = document.getElementById('gameover-modal');
+    const btnRefillHearts = document.getElementById('btn-refill-hearts');
+
     // ==========================================
-    // 5. WEB AUDIO SYNTHESIZER (FAST ZERO-DEPENDENCY SOUNDS)
+    // 6. WEB AUDIO SYNTHESIZER (ARCADE KID SOUNDS)
     // ==========================================
     let audioCtx = null;
 
@@ -482,6 +559,7 @@
     }
 
     function playTone(freq, type, duration, delay = 0, gainLevel = 0.15) {
+        if (!soundEnabled) return;
         try {
             const ctx = getAudioContext();
             if (!ctx) return;
@@ -502,16 +580,46 @@
         } catch (e) {}
     }
 
-    function playCardPickupSound() { playTone(380, 'sine', 0.08, 0, 0.12); }
-    function playCardDropSound() { playTone(320, 'triangle', 0.07, 0, 0.15); }
+    function playCardPickupSound() {
+        playTone(440, 'sine', 0.08, 0, 0.14);
+    }
+
+    function playCardDropSound() {
+        playTone(330, 'triangle', 0.07, 0, 0.18);
+    }
+
     function playSuccessChime() {
         [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
-            playTone(freq, 'sine', 0.28, idx * 0.09, 0.18);
+            playTone(freq, 'sine', 0.28, idx * 0.08, 0.18);
         });
     }
+
     function playErrorBuzz() {
-        playTone(220, 'sawtooth', 0.18, 0, 0.15);
-        playTone(180, 'sawtooth', 0.2, 0.08, 0.12);
+        playTone(200, 'sawtooth', 0.18, 0, 0.14);
+        playTone(160, 'sawtooth', 0.22, 0.08, 0.12);
+    }
+
+    function playMagicHintSound() {
+        [659.25, 830.61, 987.77, 1318.51, 1567.98].forEach((freq, idx) => {
+            playTone(freq, 'sine', 0.22, idx * 0.06, 0.15);
+        });
+    }
+
+    function playHeartDamageSound() {
+        playTone(330, 'sawtooth', 0.15, 0, 0.18);
+        playTone(260, 'sawtooth', 0.25, 0.1, 0.15);
+    }
+
+    function playStageFanfare() {
+        const notes = [
+            { f: 523.25, d: 0.15, del: 0 },
+            { f: 523.25, d: 0.15, del: 0.15 },
+            { f: 523.25, d: 0.15, del: 0.3 },
+            { f: 659.25, d: 0.35, del: 0.45 },
+            { f: 783.99, d: 0.45, del: 0.75 },
+            { f: 1046.50, d: 0.65, del: 1.1 }
+        ];
+        notes.forEach(n => playTone(n.f, 'triangle', n.d, n.del, 0.22));
     }
 
     // ==========================================
@@ -1122,7 +1230,317 @@
     });
 
     // ==========================================
-    // 15. CHECK ANSWER & VALIDATION
+    // 15. KIDS GAME MODE ENGINE & GAMIFICATION
+    // ==========================================
+    function switchMode(newMode) {
+        activeMode = newMode;
+        localStorage.setItem('quran_game_mode', newMode);
+
+        if (activeMode === 'game') {
+            btnModeGame.classList.add('active');
+            btnModeGame.setAttribute('aria-selected', 'true');
+            btnModeFree.classList.remove('active');
+            btnModeFree.setAttribute('aria-selected', 'false');
+
+            kidsGameHud.style.display = 'flex';
+            btnOpenStages.style.display = 'inline-flex';
+            btnToggleSidebar.style.display = 'none';
+
+            // Sync with current kids stage
+            const stage = KIDS_ADVENTURE_STAGES[currentStageIndex];
+            currentSurahNumber = stage.surahNumber;
+            if (currentAyahNumber > stage.ayahsCount) currentAyahNumber = 1;
+
+            updateTopNavSelectors();
+            renderKidsHUD();
+            loadCurrentAyah();
+
+            const greet = (currentTheme === 'theme-girls')
+                ? 'مَرْحَبًا بِكِ يَا أَمِيرَةَ الْقُرْآنِ فِي طَوْرِ الْمُغَامَرَاتِ! رَتِّبِي لِتَفُوزِي! 🌸'
+                : 'مَرْحَبًا بِكَ يَا بَطَلَ الْقُرْآنِ فِي طَوْرِ الْمُغَامَرَاتِ! رَتِّبْ لِتَفُوزَ! ⭐';
+            mascotText.textContent = greet;
+        } else {
+            btnModeFree.classList.add('active');
+            btnModeFree.setAttribute('aria-selected', 'true');
+            btnModeGame.classList.remove('active');
+            btnModeGame.setAttribute('aria-selected', 'false');
+
+            kidsGameHud.style.display = 'none';
+            btnOpenStages.style.display = 'none';
+            btnToggleSidebar.style.display = 'inline-flex';
+
+            updateTopNavSelectors();
+            loadCurrentAyah();
+
+            const greet = (currentTheme === 'theme-girls')
+                ? 'طَوْرُ التِّلَاوَةِ وَالْحِفْظِ الْحُرِّ لِكَافَّةِ الأَجْزَاءِ الـ 30 📖'
+                : 'طَوْرُ التِّلَاوَةِ وَالْحِفْظِ الْحُرِّ لِكَافَّةِ الأَجْزَاءِ الـ 30 📖';
+            mascotText.textContent = greet;
+        }
+    }
+
+    function renderHearts() {
+        if (!heartsContainer) return;
+        heartsContainer.innerHTML = '';
+        for (let i = 0; i < maxHearts; i++) {
+            const h = document.createElement('span');
+            h.className = `heart-icon ${i < hearts ? 'alive' : 'broken'}`;
+            h.textContent = '❤️';
+            h.id = `heart-icon-${i}`;
+            heartsContainer.appendChild(h);
+        }
+    }
+
+    function renderKidsHUD() {
+        renderHearts();
+        const stage = KIDS_ADVENTURE_STAGES[currentStageIndex] || KIDS_ADVENTURE_STAGES[0];
+
+        if (currentStageTitle) {
+            currentStageTitle.textContent = `المرحلة ${toArabicNumerals(stage.id)}: ${stage.surahName}`;
+        }
+        if (hudStageName) {
+            hudStageName.textContent = `المرحلة ${toArabicNumerals(stage.id)}: ${stage.title} ${stage.icon}`;
+        }
+        if (hudStageStep) {
+            hudStageStep.textContent = `الآيَةُ ${toArabicNumerals(currentAyahNumber)} مِنْ ${toArabicNumerals(stage.ayahsCount)}`;
+        }
+        if (hudProgressFill) {
+            const pct = Math.round(((currentAyahNumber - 1) / stage.ayahsCount) * 100);
+            hudProgressFill.style.width = `${Math.max(12, pct)}%`;
+        }
+        if (hintCountPill) {
+            hintCountPill.textContent = toArabicNumerals(magicHintsLeft);
+        }
+        if (btnMagicHint) {
+            btnMagicHint.disabled = (magicHintsLeft <= 0 || isSolved);
+        }
+
+        if (comboStreakBadge && streakNum) {
+            if (comboStreak >= 2) {
+                comboStreakBadge.style.display = 'inline-flex';
+                streakNum.textContent = toArabicNumerals(comboStreak);
+            } else {
+                comboStreakBadge.style.display = 'none';
+            }
+        }
+
+        if (trophiesBadgeCount) {
+            trophiesBadgeCount.textContent = toArabicNumerals(unlockedTrophies.length);
+        }
+    }
+
+    function showFloatingPoint(text, clientX, clientY) {
+        if (!floatingPointsContainer) return;
+        const pt = document.createElement('div');
+        pt.className = 'floating-point-item';
+        pt.textContent = text;
+
+        const posX = clientX || (window.innerWidth / 2) - 40;
+        const posY = clientY || (window.innerHeight / 2) - 40;
+
+        pt.style.left = `${posX}px`;
+        pt.style.top = `${posY}px`;
+
+        floatingPointsContainer.appendChild(pt);
+
+        setTimeout(() => {
+            if (pt.parentNode) pt.parentNode.removeChild(pt);
+        }, 1200);
+    }
+
+    // Magic Hint Power-Up: Place the next correct word automatically
+    function useMagicHint() {
+        if (isSolved || magicHintsLeft <= 0 || !currentAyahData) return;
+
+        const expectedWords = currentAyahData.words;
+        const slots = [...targetDropzone.querySelectorAll('.target-slot')];
+
+        // Find the first target slot that is either empty or holds the wrong word
+        let targetSlotIndex = -1;
+        for (let i = 0; i < slots.length; i++) {
+            const currentCard = slots[i].querySelector('.word-card');
+            const currentWord = currentCard ? currentCard.querySelector('.card-word-text').textContent.trim() : null;
+            if (!currentCard || currentWord !== expectedWords[i]) {
+                targetSlotIndex = i;
+                break;
+            }
+        }
+
+        if (targetSlotIndex === -1) {
+            showToast('كُلُّ الْكَلِمَاتِ فِي مَوَاقِعِهَا الصَّحِيحَةِ بِالْفِعْلِ! ✨', 'info');
+            return;
+        }
+
+        const targetSlot = slots[targetSlotIndex];
+        const correctWordText = expectedWords[targetSlotIndex];
+
+        // Find the word card containing correctWordText
+        const allCards = [...document.querySelectorAll('.word-card')];
+        let foundCard = allCards.find(c => {
+            const txt = c.querySelector('.card-word-text').textContent.trim();
+            return txt === correctWordText && c.parentElement !== targetSlot;
+        });
+
+        if (!foundCard) return;
+
+        // Place card in target slot
+        placeCardInSlot(foundCard, targetSlot);
+
+        // Highlight card with magic glow
+        foundCard.classList.add('card-hint-highlight');
+        setTimeout(() => {
+            foundCard.classList.remove('card-hint-highlight');
+        }, 2200);
+
+        magicHintsLeft--;
+        playMagicHintSound();
+        showFloatingPoint('🪄 مُسَاعَدَةٌ سِحْرِيَّةٌ!', window.innerWidth / 2 - 60, window.innerHeight / 2 - 30);
+        renderKidsHUD();
+
+        unlockTrophy('hint_master');
+    }
+
+    // Trophies / Badges System
+    function unlockTrophy(trophyId) {
+        if (unlockedTrophies.includes(trophyId)) return;
+        const trophy = KIDS_TROPHIES.find(t => t.id === trophyId);
+        if (!trophy) return;
+
+        unlockedTrophies.push(trophyId);
+        localStorage.setItem('quran_game_trophies', JSON.stringify(unlockedTrophies));
+
+        playSuccessChime();
+        showToast(`🎉 وِسَامٌ جَدِيدٌ: ${trophy.icon} ${trophy.title}!`, 'success');
+        renderKidsHUD();
+    }
+
+    function renderTrophiesGrid() {
+        if (!trophiesGrid) return;
+        trophiesGrid.innerHTML = '';
+
+        KIDS_TROPHIES.forEach(trophy => {
+            const isUnlocked = unlockedTrophies.includes(trophy.id);
+            const card = document.createElement('div');
+            card.className = `trophy-card ${isUnlocked ? 'unlocked' : 'locked'}`;
+            card.innerHTML = `
+                <div class="trophy-icon-wrap">${isUnlocked ? trophy.icon : '🔒'}</div>
+                <div class="trophy-info">
+                    <span class="trophy-title">${trophy.title}</span>
+                    <span class="trophy-desc">${trophy.desc}</span>
+                    <span class="trophy-status-pill">${isUnlocked ? 'مُكْتَمَلٌ ⭐' : 'قَيْدُ التَّحَدِّي ⏳'}</span>
+                </div>
+            `;
+            trophiesGrid.appendChild(card);
+        });
+    }
+
+    function openTrophiesModal() {
+        renderTrophiesGrid();
+        trophiesModal.classList.add('open');
+        trophiesModal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeTrophiesModal() {
+        trophiesModal.classList.remove('open');
+        trophiesModal.setAttribute('aria-hidden', 'true');
+    }
+
+    // Stages Map Modal
+    function renderStagesGrid() {
+        if (!stagesGrid) return;
+        stagesGrid.innerHTML = '';
+
+        KIDS_ADVENTURE_STAGES.forEach((stage, idx) => {
+            const isUnlocked = unlockedStages.includes(stage.id);
+            const isCurrent = (idx === currentStageIndex);
+            const stars = stageStars[stage.id] || (isUnlocked && idx < currentStageIndex ? 3 : 0);
+
+            const card = document.createElement('div');
+            card.className = `stage-card ${isUnlocked ? 'unlocked' : 'locked'} ${isCurrent ? 'current' : ''}`;
+            card.innerHTML = `
+                <div class="stage-card-header">
+                    <span class="stage-num-badge">المرحلة ${toArabicNumerals(stage.id)}</span>
+                    <span style="font-size: 1.3rem;">${stage.icon}</span>
+                </div>
+                <div class="stage-card-title">${stage.surahName}</div>
+                <div class="stage-card-desc">${stage.desc} (${toArabicNumerals(stage.ayahsCount)} آيَات)</div>
+                <div class="stage-card-stars">
+                    <span class="${stars >= 1 ? 'star-gold' : 'star-empty'}">⭐</span>
+                    <span class="${stars >= 2 ? 'star-gold' : 'star-empty'}">⭐</span>
+                    <span class="${stars >= 3 ? 'star-gold' : 'star-empty'}">⭐</span>
+                </div>
+            `;
+
+            if (isUnlocked) {
+                card.addEventListener('click', () => {
+                    selectKidsStage(idx);
+                    closeStagesModal();
+                });
+            }
+
+            stagesGrid.appendChild(card);
+        });
+    }
+
+    function selectKidsStage(stageIdx) {
+        currentStageIndex = stageIdx;
+        localStorage.setItem('quran_current_stage_idx', stageIdx.toString());
+
+        const stage = KIDS_ADVENTURE_STAGES[currentStageIndex];
+        currentSurahNumber = stage.surahNumber;
+        currentAyahNumber = 1;
+        lostHeartsInCurrentStage = 0;
+        magicHintsLeft = 3;
+
+        updateTopNavSelectors();
+        renderKidsHUD();
+        loadCurrentAyah();
+    }
+
+    function openStagesModal() {
+        renderStagesGrid();
+        stagesModal.classList.add('open');
+        stagesModal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeStagesModal() {
+        stagesModal.classList.remove('open');
+        stagesModal.setAttribute('aria-hidden', 'true');
+    }
+
+    // Game Over / Refill Hearts
+    function openGameOverModal() {
+        gameoverModal.classList.add('open');
+        gameoverModal.setAttribute('aria-hidden', 'false');
+        playErrorBuzz();
+    }
+
+    function closeGameOverModal() {
+        gameoverModal.classList.remove('open');
+        gameoverModal.setAttribute('aria-hidden', 'true');
+    }
+
+    function refillHeartsAndRetry() {
+        hearts = maxHearts;
+        lostHeartsInCurrentStage = 0;
+        closeGameOverModal();
+        renderKidsHUD();
+        loadCurrentAyah();
+        playCardPickupSound();
+        showToast('تَمَّ شَحْنُ الْقُلُوبِ! هَيَّا انْطَلِقْ يَا بَطَلُ! ❤️❤️❤️', 'success');
+    }
+
+    // Sound FX Toggle
+    function toggleSoundEnabled() {
+        soundEnabled = !soundEnabled;
+        localStorage.setItem('quran_game_sound', soundEnabled.toString());
+        soundIcon.textContent = soundEnabled ? '🔊' : '🔇';
+        btnSoundToggle.title = soundEnabled ? 'كتم المؤثرات الصوتية' : 'تشغيل المؤثرات الصوتية';
+        if (soundEnabled) playCardPickupSound();
+    }
+
+    // ==========================================
+    // 16. CHECK ANSWER & VALIDATION
     // ==========================================
     function checkAnswer() {
         if (!currentAyahData) return;
@@ -1157,8 +1575,51 @@
                 if (c) c.classList.add('card-correct');
             });
 
-            currentScore += 10;
+            // Score & Streaks
+            comboStreak++;
+            const streakBonus = (comboStreak > 1) ? (comboStreak - 1) * 5 : 0;
+            const pointsGained = 10 + streakBonus;
+            currentScore += pointsGained;
             scoreVal.textContent = currentScore;
+            localStorage.setItem('quran_game_score', currentScore.toString());
+
+            // Floating point animation
+            const bonusText = (comboStreak > 1) ? `+${pointsGained} 🔥 x${comboStreak}!` : `+${pointsGained} ⭐`;
+            showFloatingPoint(bonusText);
+
+            // Trophies check
+            unlockTrophy('first_win');
+            if (comboStreak >= 3) unlockTrophy('streak_3');
+
+            const currentStage = KIDS_ADVENTURE_STAGES[currentStageIndex];
+            const isStageComplete = (activeMode === 'game' && currentAyahNumber === currentStage.ayahsCount);
+
+            if (isStageComplete) {
+                // Completed full Surah / Stage!
+                unlockTrophy('stage_clear');
+                if (lostHeartsInCurrentStage === 0) unlockTrophy('perfectionist');
+
+                // Unlock next stage if exists
+                if (currentStageIndex + 1 < KIDS_ADVENTURE_STAGES.length) {
+                    const nextStage = KIDS_ADVENTURE_STAGES[currentStageIndex + 1];
+                    if (!unlockedStages.includes(nextStage.id)) {
+                        unlockedStages.push(nextStage.id);
+                        localStorage.setItem('quran_game_stages', JSON.stringify(unlockedStages));
+                    }
+                }
+
+                // Calculate stars: 3 stars if 0 hearts lost, 2 stars if 1 lost, 1 star if 2 lost
+                const starsEarned = Math.max(1, 3 - lostHeartsInCurrentStage);
+                stageStars[currentStage.id] = starsEarned;
+                localStorage.setItem('quran_game_stars', JSON.stringify(stageStars));
+
+                // If all 7 stages cleared
+                if (unlockedStages.length >= KIDS_ADVENTURE_STAGES.length) {
+                    unlockTrophy('quran_champion');
+                }
+
+                playStageFanfare();
+            }
 
             const successGreeting = (currentTheme === 'theme-girls') ? 'أَحْسَنْتِ يَا أَمِيرَةَ الْقُرْآنِ! 🌸' : 'أَحْسَنْتَ يَا بَطَلَ الْقُرْآنِ! 🌟';
             showToast(`مُمْتَازٌ! إِجَابَةٌ صَحِيحَةٌ! ${successGreeting}`, 'success');
@@ -1172,8 +1633,10 @@
             btnCheck.style.display = 'none';
             btnNextAyah.style.display = 'flex';
 
+            renderKidsHUD();
+
             setTimeout(() => {
-                openCelebrationModal();
+                openCelebrationModal(isStageComplete, pointsGained);
             }, 800);
 
         } else {
@@ -1183,6 +1646,29 @@
                 const c = s.querySelector('.word-card');
                 if (c) c.classList.add('card-wrong');
             });
+
+            if (activeMode === 'game') {
+                comboStreak = 0;
+                hearts = Math.max(0, hearts - 1);
+                lostHeartsInCurrentStage++;
+                playHeartDamageSound();
+
+                // Animate damaged heart
+                const damagedHeart = document.getElementById(`heart-icon-${hearts}`);
+                if (damagedHeart) {
+                    damagedHeart.classList.add('damaged');
+                    setTimeout(() => damagedHeart.classList.remove('damaged'), 500);
+                }
+
+                renderKidsHUD();
+
+                if (hearts <= 0) {
+                    setTimeout(() => {
+                        openGameOverModal();
+                    }, 600);
+                    return;
+                }
+            }
 
             const retryGreeting = (currentTheme === 'theme-girls') ? 'حَاوِلِي مَرَّةً أُخْرَى يَا أَمِيرَةُ! 💪🌸' : 'حَاوِلْ مَرَّةً أُخْرَى يَا بَطَلُ! 💪⭐';
             showToast(`التَّرْتِيبُ غَيْرُ صَحِيحٍ، ${retryGreeting}`, 'error');
@@ -1203,12 +1689,23 @@
     }
 
     // ==========================================
-    // 16. CELEBRATION MODAL & NAVIGATION
+    // 17. CELEBRATION MODAL & NAVIGATION
     // ==========================================
-    function openCelebrationModal() {
+    function openCelebrationModal(isStageComplete = false, pointsGained = 10) {
         const surahObj = getSurahObj(currentSurahNumber);
         celebrationVerseText.textContent = currentAyahData.text;
         celebrationVerseRef.textContent = `${surahObj.name} - الآيَةُ ${currentAyahNumber}`;
+
+        if (isStageComplete) {
+            celebrationHeading.textContent = (currentTheme === 'theme-girls') ? 'مَبْرُوكٌ إِتْمَامُ الْمَرْحَلَةِ كَامِلَةً يَا أَمِيرَةُ! 👑🌸' : 'مَبْرُوكٌ إِتْمَامُ الْمَرْحَلَةِ كَامِلَةً يَا بَطَلُ! 🏆⭐';
+            celebrationMessage.textContent = `لَقَدْ أَتْمَمْتَ جَمِيعَ آيَاتِ ${surahObj.name} بِنَجَاحٍ بَاهِرٍ وَفُزْتَ بِالْمَرْحَلَةِ! 🚀`;
+            celebrationRewardText.textContent = `+${pointsGained} نِقَاط وَفَتْحُ الْمَرْحَلَةِ التَّالِيَةِ! 🎁`;
+        } else {
+            celebrationHeading.textContent = (currentTheme === 'theme-girls') ? 'مُمْتَازٌ جِدًّا يَا أَمِيرَةَ الْقُرْآنِ! 🌸' : 'مُمْتَازٌ جِدًّا يَا بَطَلَ الْقُرْآنِ! 🌟';
+            celebrationMessage.textContent = 'لَقَدْ رَتَّبْتَ كَلِمَاتِ الآيَةِ الْكَرِيمَةِ بِالشَّكْلِ الصَّحِيحِ!';
+            celebrationRewardText.textContent = `+${pointsGained} نِقَاط إِضَافِيَّة! 🎁`;
+        }
+
         celebrationModal.classList.add('open');
         celebrationModal.setAttribute('aria-hidden', 'false');
     }
@@ -1220,12 +1717,32 @@
 
     function goToNextAyah() {
         closeCelebrationModal();
-        const surahObj = getSurahObj(currentSurahNumber);
 
+        if (activeMode === 'game') {
+            const currentStage = KIDS_ADVENTURE_STAGES[currentStageIndex];
+            if (currentAyahNumber < currentStage.ayahsCount) {
+                currentAyahNumber++;
+            } else {
+                // Advance to next Kids Adventure Stage!
+                if (currentStageIndex + 1 < KIDS_ADVENTURE_STAGES.length) {
+                    selectKidsStage(currentStageIndex + 1);
+                    return;
+                } else {
+                    // Loop or congratulations on completing all stages
+                    showToast('🎉 مُبَارَكٌ! لَقَدْ أَتْمَمْتَ كَافَّةَ مَرَاحِلِ مُغَامَرَةِ الأَبْطَالِ! 👑', 'success');
+                    currentAyahNumber = 1;
+                }
+            }
+            renderKidsHUD();
+            loadCurrentAyah();
+            return;
+        }
+
+        // Free mode navigation
+        const surahObj = getSurahObj(currentSurahNumber);
         if (currentAyahNumber < surahObj.totalAyahs) {
             currentAyahNumber++;
         } else {
-            // Next Surah in current Juz
             const juzObj = ALL_30_JUZ.find(j => j.number === currentJuzNumber) || ALL_30_JUZ[29];
             const currentIdx = juzObj.surahs.findIndex(s => s.number === currentSurahNumber);
 
@@ -1234,7 +1751,6 @@
                 currentSurahNumber = nextSurah.number;
                 currentAyahNumber = 1;
             } else {
-                // Next Juz
                 currentJuzNumber = (currentJuzNumber % 30) + 1;
                 const nextJuzObj = ALL_30_JUZ.find(j => j.number === currentJuzNumber);
                 currentSurahNumber = nextJuzObj.surahs[0].number;
@@ -1248,7 +1764,7 @@
     }
 
     // ==========================================
-    // 17. CANVAS CONFETTI
+    // 18. CANVAS CONFETTI
     // ==========================================
     const canvas = document.getElementById('confetti-canvas');
     const ctx = canvas ? canvas.getContext('2d') : null;
@@ -1318,8 +1834,35 @@
     }
 
     // ==========================================
-    // 18. EVENT LISTENERS
+    // 19. EVENT LISTENERS
     // ==========================================
+    // Mode Switcher Controls
+    btnModeGame.addEventListener('click', () => switchMode('game'));
+    btnModeFree.addEventListener('click', () => switchMode('free'));
+
+    // Sound FX Toggle
+    btnSoundToggle.addEventListener('click', toggleSoundEnabled);
+
+    // Magic Hint Button
+    btnMagicHint.addEventListener('click', useMagicHint);
+
+    // Stages Map Modal Controls
+    btnOpenStages.addEventListener('click', openStagesModal);
+    btnCloseStages.addEventListener('click', closeStagesModal);
+    stagesModal.addEventListener('click', (e) => {
+        if (e.target === stagesModal) closeStagesModal();
+    });
+
+    // Trophies Modal Controls
+    btnOpenTrophies.addEventListener('click', openTrophiesModal);
+    btnCloseTrophies.addEventListener('click', closeTrophiesModal);
+    trophiesModal.addEventListener('click', (e) => {
+        if (e.target === trophiesModal) closeTrophiesModal();
+    });
+
+    // Game Over / Refill Hearts
+    btnRefillHearts.addEventListener('click', refillHeartsAndRetry);
+
     // Sidebar Controls
     btnToggleSidebar.addEventListener('click', openSidebar);
     btnCloseSidebar.addEventListener('click', closeSidebar);
@@ -1336,11 +1879,13 @@
         updateAyahDropdown();
         loadCurrentAyah();
         renderJuzSidebar();
+        renderKidsHUD();
     });
 
     ayahSelect.addEventListener('change', (e) => {
         currentAyahNumber = parseInt(e.target.value, 10);
         loadCurrentAyah();
+        renderKidsHUD();
     });
 
     // Control Buttons
@@ -1352,7 +1897,7 @@
     btnCheck.addEventListener('click', checkAnswer);
     btnNextAyah.addEventListener('click', goToNextAyah);
 
-    // Modal
+    // Modal Action Buttons
     btnCelebrationNext.addEventListener('click', goToNextAyah);
     btnCelebrationListen.addEventListener('click', () => {
         audioPlayer.currentTime = 0;
@@ -1367,6 +1912,8 @@
         if (e.key === 'Enter') {
             if (celebrationModal.classList.contains('open')) {
                 goToNextAyah();
+            } else if (gameoverModal.classList.contains('open')) {
+                refillHeartsAndRetry();
             } else if (btnNextAyah.style.display !== 'none') {
                 goToNextAyah();
             } else {
@@ -1376,12 +1923,13 @@
     });
 
     // ==========================================
-    // 19. APP BOOTSTRAP
+    // 20. APP BOOTSTRAP
     // ==========================================
+    soundIcon.textContent = soundEnabled ? '🔊' : '🔇';
     applyTheme(currentTheme);
     setupFilterChips();
     renderJuzSidebar();
-    updateTopNavSelectors();
-    loadCurrentAyah();
+    switchMode(activeMode);
 
 })();
+

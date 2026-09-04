@@ -16,6 +16,9 @@
     <!-- Confetti Canvas for Celebration -->
     <canvas id="confetti-canvas"></canvas>
 
+    <!-- Floating Points Container -->
+    <div id="floating-points-container" class="floating-points-container" aria-hidden="true"></div>
+
     <!-- Sidebar Overlay Backdrop (Mobile & Tablet) -->
     <div id="sidebar-overlay" class="sidebar-overlay" aria-hidden="true"></div>
 
@@ -55,38 +58,111 @@
     <!-- App Wrapper -->
     <div class="game-outer-frame">
 
+        <!-- Mode Switcher Banner (Kids Game Mode vs Free Exploration) -->
+        <div class="mode-switch-banner">
+            <div class="mode-toggle-pill" role="tablist" aria-label="اختر طريقة اللعب">
+                <button type="button" id="btn-mode-game" class="mode-tab active" role="tab" aria-selected="true">
+                    <span class="tab-icon">🎮</span>
+                    <span class="tab-title">طَوْرُ أَلْعَابِ الأَطْفَالِ</span>
+                    <span class="tab-badge">مُغَامَرَة 🌟</span>
+                </button>
+                <button type="button" id="btn-mode-free" class="mode-tab" role="tab" aria-selected="false">
+                    <span class="tab-icon">📖</span>
+                    <span class="tab-title">طَوْرُ التِّلَاوَةِ الْحُرّ</span>
+                    <span class="tab-badge">30 جُزْء</span>
+                </button>
+            </div>
+
+            <!-- Global Quick Controls: Sound FX + Themes -->
+            <div class="top-controls-group">
+                <!-- Sound Toggle -->
+                <button type="button" id="btn-sound-toggle" class="icon-circle-btn" title="كتم / تشغيل المؤثرات الصوتية" aria-label="تبديل الصوت">
+                    <span id="sound-icon">🔊</span>
+                </button>
+
+                <!-- Trophies Room Trigger -->
+                <button type="button" id="btn-open-trophies" class="icon-circle-btn trophy-btn" title="خزانة الأوسمة والجوائز" aria-label="الأوسمة">
+                    <span>🏆</span>
+                    <span id="trophies-badge-count" class="icon-sub-badge">0</span>
+                </button>
+
+                <!-- Theme Switcher -->
+                <div class="theme-selector-wrapper">
+                    <div class="theme-toggle-group" role="radiogroup" aria-label="اختيار المظهر">
+                        <button type="button" id="btn-theme-boys" class="theme-btn active" data-theme="theme-boys" aria-pressed="true" title="ثيم الأبطال للأولاد">
+                            <span class="theme-icon">👦</span>
+                            <span class="theme-name">أولاد</span>
+                        </button>
+                        <button type="button" id="btn-theme-girls" class="theme-btn" data-theme="theme-girls" aria-pressed="false" title="ثيم الأميرات للبنات">
+                            <span class="theme-icon">👧</span>
+                            <span class="theme-name">بنات</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Top Header & Navigation Bar -->
         <header class="top-nav-bar">
-            <!-- Sidebar Open Trigger -->
+            <!-- Sidebar Open Trigger (Shown in Free Mode or on request) -->
             <button type="button" id="btn-toggle-sidebar" class="btn-sidebar-toggle" aria-expanded="false" title="افتح قائمة الأجزاء الثلاثين">
                 <span class="hamburger-icon">☰</span>
                 <span class="toggle-text">الأَجْزَاءُ الـ 30</span>
                 <span id="current-juz-badge" class="current-juz-pill">جُزْءُ 30</span>
             </button>
 
-            <!-- Theme Switcher -->
-            <div class="theme-selector-wrapper">
-                <span class="theme-label">الثِّيم:</span>
-                <div class="theme-toggle-group" role="radiogroup" aria-label="اختيار المظهر">
-                    <button type="button" id="btn-theme-boys" class="theme-btn active" data-theme="theme-boys" aria-pressed="true">
-                        <span class="theme-icon">👦</span>
-                        <span class="theme-name">أولاد</span>
-                    </button>
-                    <button type="button" id="btn-theme-girls" class="theme-btn" data-theme="theme-girls" aria-pressed="false">
-                        <span class="theme-icon">👧</span>
-                        <span class="theme-name">بنات</span>
-                    </button>
-                </div>
-            </div>
+            <!-- Kids Game Stages Trigger Button -->
+            <button type="button" id="btn-open-stages" class="btn-stages-map" title="عرض خريطة المراحل">
+                <span class="map-icon">🗺️</span>
+                <span id="current-stage-title" class="stage-text">المرحلة ١: سورة الإخلاص</span>
+                <span class="stage-level-tag">المراحل ⭐</span>
+            </button>
 
             <!-- Surah & Ayah Quick Selectors -->
-            <div class="surah-nav-group">
+            <div id="free-selectors-group" class="surah-nav-group">
                 <label for="surah-select" class="nav-label">السُّورَة:</label>
                 <select id="surah-select" class="custom-select" aria-label="اختر السورة"></select>
                 <label for="ayah-select" class="nav-label">الآيَة:</label>
                 <select id="ayah-select" class="custom-select ayah-select" aria-label="اختر الآية"></select>
             </div>
         </header>
+
+        <!-- Kids Game HUD Bar (Hearts, Progress, Combo, Magic Hint) -->
+        <section id="kids-game-hud" class="kids-game-hud" aria-label="شريط تحدي الألعاب للأطفال">
+            <!-- Hearts Lives -->
+            <div class="hud-item hud-hearts-box" title="القلوب المتبقية">
+                <span class="hud-label">الْفُرَص:</span>
+                <div id="hearts-container" class="hearts-row" aria-label="3 قلوب متبقية">
+                    <span class="heart-icon alive">❤️</span>
+                    <span class="heart-icon alive">❤️</span>
+                    <span class="heart-icon alive">❤️</span>
+                </div>
+            </div>
+
+            <!-- Stage Progress Bar -->
+            <div class="hud-item hud-progress-box">
+                <div class="progress-info-row">
+                    <span class="progress-title" id="hud-stage-name">المرحلة ١: الإخلاص</span>
+                    <span class="progress-steps" id="hud-stage-step">الآيَة ١ مِنْ ٤</span>
+                </div>
+                <div class="progress-track">
+                    <div id="hud-progress-fill" class="progress-fill" style="width: 25%"></div>
+                </div>
+            </div>
+
+            <!-- Combo Streak Flame -->
+            <div id="combo-streak-badge" class="hud-item hud-streak-box" style="display: none;" title="سلسلة الإجابات الصحيحة!">
+                <span class="flame-icon">🔥</span>
+                <span class="streak-text"><strong id="streak-num">2</strong>x سِلْسِلَة!</span>
+            </div>
+
+            <!-- Magic Hint Power-Up Button -->
+            <button type="button" id="btn-magic-hint" class="hud-item btn-magic-hint" title="مساعدة سحرية: تضع كلمة في مكانها الصحيح!">
+                <span class="hint-wand-icon">🪄</span>
+                <span class="hint-text">مُسَاعَدَةٌ سِحْرِيَّة</span>
+                <span id="hint-count-pill" class="hint-count-badge">3</span>
+            </button>
+        </section>
 
         <!-- Main Card Board -->
         <main class="main-card-board">
@@ -98,7 +174,9 @@
                 <!-- Mascot Greeting Badge -->
                 <div id="mascot-greeting" class="mascot-greeting">
                     <span id="mascot-avatar" class="mascot-avatar">🦸‍♂️</span>
-                    <span id="mascot-text" class="mascot-text">مَرْحَبًا بِكَ يَا بَطَلَ الْقُرْآنِ! رَتِّبِ الْكَلِمَاتِ لِتَفُوزَ! ⭐</span>
+                    <div class="mascot-bubble">
+                        <span id="mascot-text" class="mascot-text">مَرْحَبًا بِكَ يَا بَطَلَ الْقُرْآنِ! رَتِّبِ الْكَلِمَاتِ لِتَفُوزَ! ⭐</span>
+                    </div>
                 </div>
 
                 <!-- Info Badges Row -->
@@ -129,7 +207,7 @@
             <section class="dashed-section-box target-section" aria-label="منطقة الترتيب">
                 <div class="section-title-wrap">
                     <span class="section-title">رَتِّبِ الْكَلِمَاتِ هُنَا فِي التَّرْتِيبِ الصَّحِيحِ:</span>
-                    <span class="section-hint">(اسْحَبِ الْكَلِمَاتِ إِلَى الْخَانَاتِ الْمُرَقَّمَةِ هُنَا)</span>
+                    <span class="section-hint">(اسْحَبِ الْكَلِمَاتِ إِلَى الْخَانَاتِ الْمُرَقَّمَةِ أَوْ انْقُرْ عَلَيْهَا)</span>
                 </div>
                 
                 <div id="target-dropzone" class="dropzone target-dropzone" data-zone="target" tabindex="0" role="region" aria-label="منطقة ترتيب الكلمات">
@@ -141,7 +219,7 @@
             <section class="dashed-section-box source-section" aria-label="بنك الكلمات">
                 <div class="section-title-wrap">
                     <span class="section-title">اِضْغَطْ عَلَى الْكَلِمَةِ لِتَضَعَهَا فِي الْمَكَانِ الْمُنَاسِبِ:</span>
-                    <span class="section-hint">(اسْحَبْ بِالْمِقْبَضِ ⠿ أَوْ انْقُرْ عَلَى الْكَلِمَةِ)</span>
+                    <span class="section-hint">(اسْحَبْ بِالْمِقْبَضِ ⠿ أَوْ انْقُرْ عَلَى الْكَلِمَةِ مُبَاشَرَةً)</span>
                 </div>
 
                 <div id="source-pool" class="words-pool-box" data-zone="source" role="region" aria-label="بنك الكلمات المبعثرة">
@@ -172,12 +250,12 @@
 
         <!-- Footer Credits -->
         <footer class="game-footer">
-            <p>🎧 التِّلَاوَةُ بِصَوْتِ الشَّيْخِ <strong>مِشَارِي رَاشِدِ الْعَفَاسِي</strong> | مُبَارَكٌ لِكُلِّ حَافِظٍ وَحَافِظَةٍ فِي كَافَّةِ الأَجْزَاءِ الـ 30 🌟</p>
+            <p>🎧 التِّلَاوَةُ بِصَوْتِ الشَّيْخِ <strong>مِشَارِي رَاشِدِ الْعَفَاسِي</strong> | مُبَارَكٌ لِكُلِّ بَطَلٍ وَأَمِيرَةٍ فِي كَافَّةِ الأَجْزَاءِ الـ 30 🌟</p>
         </footer>
 
     </div>
 
-    <!-- Celebration Modal Dialog -->
+    <!-- Celebration Modal Dialog (Correct Answer) -->
     <div id="celebration-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
         <div class="celebration-card">
             <div class="confetti-burst-icon">🎉 🌟 🎈 🌟 🎉</div>
@@ -189,10 +267,17 @@
                 <div id="celebration-verse-ref" class="verse-quote-ref"></div>
             </div>
 
-            <div class="celebration-stars-row">
-                <span class="c-star">⭐</span>
-                <span class="c-star">⭐</span>
-                <span class="c-star">⭐</span>
+            <!-- 3 Gold Stars with Bouncing Animation -->
+            <div class="celebration-stars-row" id="celebration-stars-row">
+                <span class="c-star gold-star active">⭐</span>
+                <span class="c-star gold-star active">⭐</span>
+                <span class="c-star gold-star active">⭐</span>
+            </div>
+
+            <!-- Score Award Box -->
+            <div class="celebration-reward-box" id="celebration-reward-box">
+                <span class="reward-icon">🎁</span>
+                <span id="celebration-reward-text" class="reward-text">+10 نِقَاط إِضَافِيَّة!</span>
             </div>
 
             <div class="celebration-actions">
@@ -202,6 +287,57 @@
                 </button>
                 <button type="button" id="btn-celebration-next" class="modal-btn modal-btn-primary">
                     <span>مُوَاصَلَةُ التَّحَدِّي 🚀</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kids Stages Map Modal -->
+    <div id="stages-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="stages-card modal-content-box">
+            <div class="modal-header-row">
+                <div class="modal-title-wrap">
+                    <span class="modal-header-icon">🗺️</span>
+                    <h2 class="modal-heading">خَرِيطَةُ مَرَاحِلِ الأَبْطَالِ</h2>
+                </div>
+                <button type="button" id="btn-close-stages" class="btn-close-modal" aria-label="إغلاق">✕</button>
+            </div>
+            <p class="modal-subtext">أَكْمِلِ الْمَرَاحِلَ لِتَفُوزَ بِالأَوْسِمَةِ وَتَصْعَدَ فِي مَرَاتِبِ الْقُرْآنِ الْكَرِيمِ! 🌟</p>
+            
+            <div id="stages-grid" class="stages-grid">
+                <!-- Dynamically Populated Stages -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Trophies & Badges Modal -->
+    <div id="trophies-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="trophies-card modal-content-box">
+            <div class="modal-header-row">
+                <div class="modal-title-wrap">
+                    <span class="modal-header-icon">🏆</span>
+                    <h2 class="modal-heading">خَزَانَةُ الأَوْسِمَةِ وَالْجَوَائِزِ</h2>
+                </div>
+                <button type="button" id="btn-close-trophies" class="btn-close-modal" aria-label="إغلاق">✕</button>
+            </div>
+            <p class="modal-subtext">كُلَّمَا رَتَّبْتَ بِدِقَّةٍ وَحَقَّقْتَ سَلَاسِلَ نَصْرٍ حَصَلْتَ عَلَى أَوْسِمَةٍ ذَهَبِيَّةٍ! 🥇</p>
+
+            <div id="trophies-grid" class="trophies-grid">
+                <!-- Dynamically Populated Badges -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over / Refill Hearts Modal -->
+    <div id="gameover-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="gameover-card modal-content-box">
+            <div class="gameover-mascot-icon">💔 🦸‍♂️ 💖</div>
+            <h2 class="gameover-heading">لَا تَحْزَنْ يَا بَطَلَ الْقُرْآنِ!</h2>
+            <p class="gameover-message">نَفِدَتِ الْقُلُوبُ فِي هَذِهِ الْمَحَاوَلَةِ، وَلَكِنَّ الشُّجْعَانَ يَتَعَلَّمُونَ مِنَ الْخَطَأِ وَيُحَاوِلُونَ دَائِمًا! 💪</p>
+            
+            <div class="gameover-actions">
+                <button type="button" id="btn-refill-hearts" class="modal-btn modal-btn-primary refill-btn">
+                    <span>إِعَادَةُ شَحْنِ الْقُلُوبِ وَالْمُحَاوَلَةُ ❤️❤️❤️</span>
                 </button>
             </div>
         </div>
