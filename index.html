@@ -1,348 +1,249 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لُعْبَةُ تَرْتِيبِ كَلِمَاتِ الْقُرْآنِ الْكَرِيمِ - كَافَّةُ الأَجْزَاءِ الـ 30</title>
-    <meta name="description" content="لعبة تفاعلية تعليمية للأطفال لترتيب كلمات آيات القرآن الكريم بالسحب والإفلات لجميع الأجزاء الـ 30 مع ثيم للأولاد وثيم للبنات وتلاوة صوتية.">
-    <!-- Google Fonts: Amiri for Quranic Calligraphy & Cairo for UI -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Cairo:wght@500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body class="theme-boys">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لعبة ترتيب كلمات القرآن الكريم - أكاديمية ستريم لاين</title>
+  <meta name="description" content="لعبة تفاعلية ممتعة لترتيب وحفظ كلمات آيات القرآن الكريم لجميع الأجزاء الثلاثين مع التلاوة الصوتية.">
 
-    <!-- Confetti Canvas for Celebration -->
+  <!-- Google Fonts: Amiri (Arabic Calligraphy), Cairo (Clean UI), Scheherazade New -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Cairo:wght@400;500;600;700;800&family=Scheherazade+New:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Confetti Overlay Canvas -->
     <canvas id="confetti-canvas"></canvas>
 
-    <!-- Floating Points Container -->
-    <div id="floating-points-container" class="floating-points-container" aria-hidden="true"></div>
-
-    <!-- Sidebar Overlay Backdrop (Mobile & Tablet) -->
-    <div id="sidebar-overlay" class="sidebar-overlay" aria-hidden="true"></div>
-
-    <!-- Collapsible 30-Juz Sidebar -->
-    <aside id="juz-sidebar" class="juz-sidebar" aria-label="قائمة الأجزاء الثلاثين">
-        <div class="sidebar-header">
-            <div class="sidebar-title-group">
-                <span class="quran-book-icon">📖</span>
-                <div>
-                    <h2 class="sidebar-heading">أَجْزَاءُ الْقُرْآنِ الْكَرِيمِ</h2>
-                    <span class="sidebar-subheading">كَافَّةُ الأَجْزَاءِ الـ 30 (1 - 30)</span>
-                </div>
-            </div>
-            <button type="button" id="btn-close-sidebar" class="btn-close-sidebar" aria-label="إغلاق القائمة">✕</button>
+    <!-- Sidebar: 30 Juz' Navigation (Positioned on the RIGHT) -->
+    <aside class="sidebar" id="sidebar" aria-label="قائمة الأجزاء الثلاثين">
+      <div class="sidebar-header">
+        <div class="brand">
+          <div class="brand-icon">
+            <i class="fa-solid fa-quran"></i>
+          </div>
+          <div>
+            <h1 class="brand-title">أكاديمية ستريم لاين</h1>
+            <span class="brand-subtitle">ترتيب كلمات القرآن</span>
+          </div>
         </div>
 
-        <!-- Search Bar in Sidebar -->
-        <div class="sidebar-search-box">
-            <span class="search-icon">🔍</span>
-            <input type="text" id="juz-search-input" class="juz-search-input" placeholder="ابْحَثْ بِرَقْمِ الْجُزْءِ أَوْ اسْمِ السُّورَةِ..." aria-label="بحث في الأجزاء">
+        <div class="juz-search-box">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="text" id="juz-search-input" placeholder="ابحث عن جزء (1-30) أو سورة..." autocomplete="off">
         </div>
+      </div>
 
-        <!-- Quick Filter Tags -->
-        <div class="quick-filter-tags">
-            <button type="button" class="filter-tag active" data-filter="all">جَمِيعُ الأَجْزَاءِ</button>
-            <button type="button" class="filter-tag" data-filter="juz30">جُزْءُ عَمَّ (30)</button>
-            <button type="button" class="filter-tag" data-filter="juz29">جُزْءُ تَبَارَكَ (29)</button>
-            <button type="button" class="filter-tag" data-filter="short">قِصَارُ السُّوَرِ</button>
-        </div>
-
-        <!-- 30 Juz Scrollable List -->
-        <div id="juz-items-container" class="juz-items-container" role="list">
-            <!-- Dynamically populated with all 30 Juz & their Surahs -->
-        </div>
+      <!-- Scrollable 30 Juz' List -->
+      <nav class="juz-list" id="juz-list" aria-label="قائمة الأجزاء">
+        <!-- Rendered dynamically by app.js -->
+      </nav>
     </aside>
 
-    <!-- App Wrapper -->
-    <div class="game-outer-frame">
-
-        <!-- Mode Switcher Banner (Kids Game Mode vs Free Exploration) -->
-        <div class="mode-switch-banner">
-            <div class="mode-toggle-pill" role="tablist" aria-label="اختر طريقة اللعب">
-                <button type="button" id="btn-mode-game" class="mode-tab active" role="tab" aria-selected="true">
-                    <span class="tab-icon">🎮</span>
-                    <span class="tab-title">طَوْرُ أَلْعَابِ الأَطْفَالِ</span>
-                    <span class="tab-badge">مُغَامَرَة 🌟</span>
-                </button>
-                <button type="button" id="btn-mode-free" class="mode-tab" role="tab" aria-selected="false">
-                    <span class="tab-icon">📖</span>
-                    <span class="tab-title">طَوْرُ التِّلَاوَةِ الْحُرّ</span>
-                    <span class="tab-badge">30 جُزْء</span>
-                </button>
-            </div>
-
-            <!-- Global Quick Controls: Sound FX + Themes -->
-            <div class="top-controls-group">
-                <!-- Sound Toggle -->
-                <button type="button" id="btn-sound-toggle" class="icon-circle-btn" title="كتم / تشغيل المؤثرات الصوتية" aria-label="تبديل الصوت">
-                    <span id="sound-icon">🔊</span>
-                </button>
-
-                <!-- Trophies Room Trigger -->
-                <button type="button" id="btn-open-trophies" class="icon-circle-btn trophy-btn" title="خزانة الأوسمة والجوائز" aria-label="الأوسمة">
-                    <span>🏆</span>
-                    <span id="trophies-badge-count" class="icon-sub-badge">0</span>
-                </button>
-
-                <!-- Theme Switcher -->
-                <div class="theme-selector-wrapper">
-                    <div class="theme-toggle-group" role="radiogroup" aria-label="اختيار المظهر">
-                        <button type="button" id="btn-theme-boys" class="theme-btn active" data-theme="theme-boys" aria-pressed="true" title="ثيم الأبطال للأولاد">
-                            <span class="theme-icon">👦</span>
-                            <span class="theme-name">أولاد</span>
-                        </button>
-                        <button type="button" id="btn-theme-girls" class="theme-btn" data-theme="theme-girls" aria-pressed="false" title="ثيم الأميرات للبنات">
-                            <span class="theme-icon">👧</span>
-                            <span class="theme-name">بنات</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
+    <!-- Main Content Area -->
+    <main class="main-content" id="main-content">
+      <!-- Top Sticky Navigation Bar -->
+      <header class="topbar">
+        <div class="topbar-right-controls">
+          <button class="mobile-toggle" id="mobile-menu-btn" title="فتح قائمة الأجزاء">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="current-juz-tag">
+            <i class="fa-solid fa-book-bookmark text-emerald"></i>
+            <span class="juz-tag-label">الجزء:</span>
+            <strong id="current-juz-title">الجزء الثلاثون (عَمَّ)</strong>
+          </div>
         </div>
 
-        <!-- Top Header & Navigation Bar -->
-        <header class="top-nav-bar">
-            <!-- Sidebar Open Trigger (Shown in Free Mode or on request) -->
-            <button type="button" id="btn-toggle-sidebar" class="btn-sidebar-toggle" aria-expanded="false" title="افتح قائمة الأجزاء الثلاثين">
-                <span class="hamburger-icon">☰</span>
-                <span class="toggle-text">الأَجْزَاءُ الـ 30</span>
-                <span id="current-juz-badge" class="current-juz-pill">جُزْءُ 30</span>
+        <div class="topbar-left-controls">
+          <!-- Surah and Ayah Selectors in topbar for fast access -->
+          <div class="topbar-picker">
+            <div class="picker-item">
+              <span class="picker-label"><i class="fa-solid fa-book-open"></i> السورة:</span>
+              <div class="select-wrapper">
+                <select id="surah-select" class="styled-select" aria-label="اختر السورة">
+                  <!-- Populated dynamically -->
+                </select>
+                <i class="fa-solid fa-chevron-down select-arrow"></i>
+              </div>
+            </div>
+
+            <div class="picker-item">
+              <span class="picker-label"><i class="fa-solid fa-list-ol"></i> الآية:</span>
+              <div class="ayah-stepper">
+                <button class="stepper-btn" id="next-ayah-btn" title="الآية التالية">
+                  <i class="fa-solid fa-chevron-right"></i>
+                </button>
+                <input type="number" id="ayah-input" class="stepper-input" value="1" min="1" max="4" aria-label="رقم الآية">
+                <button class="stepper-btn" id="prev-ayah-btn" title="الآية السابقة">
+                  <i class="fa-solid fa-chevron-left"></i>
+                </button>
+              </div>
+              <span class="ayah-total-label" id="ayah-total-label">من 4</span>
+            </div>
+          </div>
+
+          <button class="audio-settings-toggle active" id="word-audio-toggle" title="نطق الكلمة عند النقر">
+            <i class="fa-solid fa-volume-high"></i>
+            <span>صوت الكلمة</span>
+          </button>
+
+          <button class="btn-hint" id="hint-btn" title="مساعدة: وضع الكلمة التالية">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <span>مساعدة</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Center Workspace containing Game Board -->
+      <div class="workspace">
+        <!-- Exact Game Board from Screenshot -->
+        <div class="game-board-container" id="game-board-container">
+          
+          <!-- Top Yellow Bordered Header Card -->
+          <div class="game-header-card" id="ayah-header-card">
+            <h1 class="game-title">لُعْبَةُ تَرْتِيبِ كَلِمَاتِ القُرْآنِ</h1>
+            
+            <!-- Badges Row: Score, Ayah, Surah (In RTL: Surah right, Ayah middle, Score left) -->
+            <div class="game-badges-row">
+              <div class="badge-pill badge-score" id="score-badge" title="مجموع النقاط">
+                <i class="fa-solid fa-star star-icon"></i>
+                <span class="score-label">النِّقَاط:</span>
+                <strong id="score-counter">0</strong>
+              </div>
+
+              <div class="badge-pill badge-ayah" id="header-ayah-indicator" title="رقم الآية">
+                <span id="header-ayah-badge-text">الآيَةُ 1</span>
+              </div>
+
+              <div class="badge-pill badge-surah" id="header-surah-arabic" title="اسم السورة">
+                <span id="surah-badge-name">سُورَةُ الإِخْلَاصِ</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions Row: Reset and Listen to Ayah -->
+          <div class="game-actions-row">
+            <button class="btn-action-reset" id="reset-btn" title="إعادة ترتيب الكلمات">
+              <i class="fa-solid fa-arrows-rotate"></i>
+              <span>إِعَادَةُ التَّرْتِيبِ</span>
             </button>
 
-            <!-- Kids Game Stages Trigger Button -->
-            <button type="button" id="btn-open-stages" class="btn-stages-map" title="عرض خريطة المراحل">
-                <span class="map-icon">🗺️</span>
-                <span id="current-stage-title" class="stage-text">المرحلة ١: سورة الإخلاص</span>
-                <span class="stage-level-tag">المراحل ⭐</span>
+            <button class="btn-action-listen" id="play-ayah-btn" title="استمع لتلاوة الآية كاملة">
+              <i class="fa-solid fa-volume-high" id="play-ayah-icon"></i>
+              <span id="play-ayah-text">اِسْتَمِعْ لِلآيَةِ</span>
+              <div class="audio-wave" id="audio-wave-bars">
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+              </div>
             </button>
+          </div>
 
-            <!-- Surah & Ayah Quick Selectors -->
-            <div id="free-selectors-group" class="surah-nav-group">
-                <label for="surah-select" class="nav-label">السُّورَة:</label>
-                <select id="surah-select" class="custom-select" aria-label="اختر السورة"></select>
-                <label for="ayah-select" class="nav-label">الآيَة:</label>
-                <select id="ayah-select" class="custom-select ayah-select" aria-label="اختر الآية"></select>
+          <!-- Upper Dashed Section: Target Drop Zone -->
+          <div class="dashed-section drop-section">
+            <div class="dashed-section-title">
+              رَتِّبِ الكَلِمَاتِ هُنَا فِي التَّرْتِيبِ الصَّحِيحِ:
             </div>
-        </header>
-
-        <!-- Kids Game HUD Bar (Hearts, Progress, Combo, Magic Hint) -->
-        <section id="kids-game-hud" class="kids-game-hud" aria-label="شريط تحدي الألعاب للأطفال">
-            <!-- Hearts Lives -->
-            <div class="hud-item hud-hearts-box" title="القلوب المتبقية">
-                <span class="hud-label">الْفُرَص:</span>
-                <div id="hearts-container" class="hearts-row" aria-label="3 قلوب متبقية">
-                    <span class="heart-icon alive">❤️</span>
-                    <span class="heart-icon alive">❤️</span>
-                    <span class="heart-icon alive">❤️</span>
-                </div>
+            <div class="target-drop-box" id="slots-container" aria-label="منطقة ترتيب الكلمات">
+              <!-- Dynamically populated target slots -->
             </div>
+          </div>
 
-            <!-- Stage Progress Bar -->
-            <div class="hud-item hud-progress-box">
-                <div class="progress-info-row">
-                    <span class="progress-title" id="hud-stage-name">المرحلة ١: الإخلاص</span>
-                    <span class="progress-steps" id="hud-stage-step">الآيَة ١ مِنْ ٤</span>
-                </div>
-                <div class="progress-track">
-                    <div id="hud-progress-fill" class="progress-fill" style="width: 25%"></div>
-                </div>
+          <!-- Lower Dashed Section: Word Bank -->
+          <div class="dashed-section bank-section">
+            <div class="dashed-section-title">
+              اِضْغَطْ عَلَى الكَلِمَةِ لِتَضَعَهَا فِي المَكَانِ المُنَاسِبِ:
             </div>
-
-            <!-- Combo Streak Flame -->
-            <div id="combo-streak-badge" class="hud-item hud-streak-box" style="display: none;" title="سلسلة الإجابات الصحيحة!">
-                <span class="flame-icon">🔥</span>
-                <span class="streak-text"><strong id="streak-num">2</strong>x سِلْسِلَة!</span>
+            <div class="word-bank-box" id="word-bank-container" aria-label="بنك الكلمات المتاحة">
+              <div class="loading-indicator" id="loading-indicator">
+                <div class="spinner"></div>
+                <span>جاري تحميل كلمات الآية الكريمة...</span>
+              </div>
             </div>
+          </div>
 
-            <!-- Magic Hint Power-Up Button -->
-            <button type="button" id="btn-magic-hint" class="hud-item btn-magic-hint" title="مساعدة سحرية: تضع كلمة في مكانها الصحيح!">
-                <span class="hint-wand-icon">🪄</span>
-                <span class="hint-text">مُسَاعَدَةٌ سِحْرِيَّة</span>
-                <span id="hint-count-pill" class="hint-count-badge">3</span>
-            </button>
-        </section>
+          <!-- Bottom Full-Width Verification Button -->
+          <button class="btn-verify" id="check-answer-btn" title="تحقق من صحة ترتيب الكلمات">
+            <span>تَحَقَّقْ مِنَ الإِجَابَةِ</span>
+          </button>
 
-        <!-- Main Card Board -->
-        <main class="main-card-board">
-            
-            <!-- Card Header: Title and Badges -->
-            <div class="board-header">
-                <h1 class="game-title">لُعْبَةُ تَرْتِيبِ كَلِمَاتِ الْقُرْآنِ</h1>
+          <!-- Hidden compatibility elements for existing logic -->
+          <div style="display: none;" aria-hidden="true">
+            <span id="header-surah-english">Al-Ikhlaas</span>
+            <span id="header-revelation-badge">Meccan</span>
+            <div id="bismillah-banner"></div>
+            <span id="streak-counter">0</span>
+            <span id="rank-title">طالب العلم</span>
+            <div id="progress-bar-fill"></div>
+            <span id="progress-text">0 / 0</span>
+          </div>
 
-                <!-- Mascot Greeting Badge -->
-                <div id="mascot-greeting" class="mascot-greeting">
-                    <span id="mascot-avatar" class="mascot-avatar">🦸‍♂️</span>
-                    <div class="mascot-bubble">
-                        <span id="mascot-text" class="mascot-text">مَرْحَبًا بِكَ يَا بَطَلَ الْقُرْآنِ! رَتِّبِ الْكَلِمَاتِ لِتَفُوزَ! ⭐</span>
-                    </div>
-                </div>
-
-                <!-- Info Badges Row -->
-                <div class="badges-row">
-                    <div class="info-badge surah-badge" id="badge-surah">سُورَةُ الإِخْلَاصِ</div>
-                    <div class="info-badge ayah-badge" id="badge-ayah">الآيَةُ 1</div>
-                    <div class="info-badge score-badge" id="badge-score">
-                        <span class="star-icon">⭐</span>
-                        <span class="score-text">النِّقَاط: <strong id="score-val">70</strong></span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Action Buttons Row -->
-            <div class="action-buttons-row">
-                <button type="button" id="btn-listen" class="action-btn btn-listen" title="استمع لتلاوة الآية">
-                    <span>اسْتَمِعْ لِلآيَةِ</span>
-                    <span class="btn-icon">🔊</span>
-                </button>
-
-                <button type="button" id="btn-reset" class="action-btn btn-reset" title="إعادة خلط وترتيب الكلمات">
-                    <span>إِعَادَةُ التَّرْتِيبِ</span>
-                    <span class="btn-icon">🔄</span>
-                </button>
-            </div>
-
-            <!-- Box 1: Drop Target Container (Dashed Outer Box with Numbered Ghost Slots) -->
-            <section class="dashed-section-box target-section" aria-label="منطقة الترتيب">
-                <div class="section-title-wrap">
-                    <span class="section-title">رَتِّبِ الْكَلِمَاتِ هُنَا فِي التَّرْتِيبِ الصَّحِيحِ:</span>
-                    <span class="section-hint">(اسْحَبِ الْكَلِمَاتِ إِلَى الْخَانَاتِ الْمُرَقَّمَةِ أَوْ انْقُرْ عَلَيْهَا)</span>
-                </div>
-                
-                <div id="target-dropzone" class="dropzone target-dropzone" data-zone="target" tabindex="0" role="region" aria-label="منطقة ترتيب الكلمات">
-                    <!-- Target Slots will be injected dynamically -->
-                </div>
-            </section>
-
-            <!-- Box 2: Source Words Pool (Dashed Outer Box) -->
-            <section class="dashed-section-box source-section" aria-label="بنك الكلمات">
-                <div class="section-title-wrap">
-                    <span class="section-title">اِضْغَطْ عَلَى الْكَلِمَةِ لِتَضَعَهَا فِي الْمَكَانِ الْمُنَاسِبِ:</span>
-                    <span class="section-hint">(اسْحَبْ بِالْمِقْبَضِ ⠿ أَوْ انْقُرْ عَلَى الْكَلِمَةِ مُبَاشَرَةً)</span>
-                </div>
-
-                <div id="source-pool" class="words-pool-box" data-zone="source" role="region" aria-label="بنك الكلمات المبعثرة">
-                    <!-- Word cards will be injected dynamically here -->
-                </div>
-            </section>
-
-            <!-- Feedback Alert Message -->
-            <div id="feedback-toast" class="feedback-toast" role="alert" aria-live="polite"></div>
-
-            <!-- Big Bottom Action Button -->
-            <div class="check-button-wrapper">
-                <button type="button" id="btn-check" class="btn-check-main">
-                    <span class="check-icon">✨</span>
-                    <span class="check-text">تَحَقَّقْ مِنَ الإِجَابَةِ</span>
-                </button>
-
-                <button type="button" id="btn-next-ayah" class="btn-next-ayah" style="display: none;">
-                    <span>الآيَةُ التَّالِيَةُ</span>
-                    <span class="next-icon">⬅️</span>
-                </button>
-            </div>
-
-            <!-- Audio Player (Hidden Native Audio) -->
-            <audio id="ayah-audio-player" preload="none"></audio>
-
-        </main>
-
-        <!-- Footer Credits -->
-        <footer class="game-footer">
-            <p>🎧 التِّلَاوَةُ بِصَوْتِ الشَّيْخِ <strong>مِشَارِي رَاشِدِ الْعَفَاسِي</strong> | مُبَارَكٌ لِكُلِّ بَطَلٍ وَأَمِيرَةٍ فِي كَافَّةِ الأَجْزَاءِ الـ 30 🌟</p>
-        </footer>
-
-    </div>
-
-    <!-- Celebration Modal Dialog (Correct Answer) -->
-    <div id="celebration-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
-        <div class="celebration-card">
-            <div class="confetti-burst-icon">🎉 🌟 🎈 🌟 🎉</div>
-            <h2 id="celebration-heading" class="celebration-heading">مُمْتَازٌ جِدًّا يَا بَطَلَ الْقُرْآنِ!</h2>
-            <p id="celebration-message" class="celebration-message">لَقَدْ رَتَّبْتَ كَلِمَاتِ الآيَةِ الْكَرِيمَةِ بِالشَّكْلِ الصَّحِيحِ!</p>
-            
-            <div class="verse-quote-box">
-                <div id="celebration-verse-text" class="verse-quote-text"></div>
-                <div id="celebration-verse-ref" class="verse-quote-ref"></div>
-            </div>
-
-            <!-- 3 Gold Stars with Bouncing Animation -->
-            <div class="celebration-stars-row" id="celebration-stars-row">
-                <span class="c-star gold-star active">⭐</span>
-                <span class="c-star gold-star active">⭐</span>
-                <span class="c-star gold-star active">⭐</span>
-            </div>
-
-            <!-- Score Award Box -->
-            <div class="celebration-reward-box" id="celebration-reward-box">
-                <span class="reward-icon">🎁</span>
-                <span id="celebration-reward-text" class="reward-text">+10 نِقَاط إِضَافِيَّة!</span>
-            </div>
-
-            <div class="celebration-actions">
-                <button type="button" id="btn-celebration-listen" class="modal-btn modal-btn-secondary">
-                    <span>اسْتَمِعْ لِلآيَةِ مُجَدَّدًا</span>
-                    <span>🔊</span>
-                </button>
-                <button type="button" id="btn-celebration-next" class="modal-btn modal-btn-primary">
-                    <span>مُوَاصَلَةُ التَّحَدِّي 🚀</span>
-                </button>
-            </div>
         </div>
-    </div>
+      </div>
+    </main>
 
-    <!-- Kids Stages Map Modal -->
-    <div id="stages-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
-        <div class="stages-card modal-content-box">
-            <div class="modal-header-row">
-                <div class="modal-title-wrap">
-                    <span class="modal-header-icon">🗺️</span>
-                    <h2 class="modal-heading">خَرِيطَةُ مَرَاحِلِ الأَبْطَالِ</h2>
-                </div>
-                <button type="button" id="btn-close-stages" class="btn-close-modal" aria-label="إغلاق">✕</button>
-            </div>
-            <p class="modal-subtext">أَكْمِلِ الْمَرَاحِلَ لِتَفُوزَ بِالأَوْسِمَةِ وَتَصْعَدَ فِي مَرَاتِبِ الْقُرْآنِ الْكَرِيمِ! 🌟</p>
-            
-            <div id="stages-grid" class="stages-grid">
-                <!-- Dynamically Populated Stages -->
-            </div>
+    <!-- Celebration Success Modal -->
+    <div class="modal-backdrop" id="celebration-modal" aria-hidden="true">
+      <div class="modal-card">
+        <div class="celebration-icon">
+          <i class="fa-solid fa-trophy"></i>
         </div>
-    </div>
+        <h3 class="modal-title">مَا شَاءَ اللَّه! أَحْسَنْتَ!</h3>
+        <p class="modal-subtitle">لقد قمت بترتيب كلمات الآية الكريمة بالترتيب الصحيح بنجاح.</p>
 
-    <!-- Trophies & Badges Modal -->
-    <div id="trophies-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
-        <div class="trophies-card modal-content-box">
-            <div class="modal-header-row">
-                <div class="modal-title-wrap">
-                    <span class="modal-header-icon">🏆</span>
-                    <h2 class="modal-heading">خَزَانَةُ الأَوْسِمَةِ وَالْجَوَائِزِ</h2>
-                </div>
-                <button type="button" id="btn-close-trophies" class="btn-close-modal" aria-label="إغلاق">✕</button>
-            </div>
-            <p class="modal-subtext">كُلَّمَا رَتَّبْتَ بِدِقَّةٍ وَحَقَّقْتَ سَلَاسِلَ نَصْرٍ حَصَلْتَ عَلَى أَوْسِمَةٍ ذَهَبِيَّةٍ! 🥇</p>
-
-            <div id="trophies-grid" class="trophies-grid">
-                <!-- Dynamically Populated Badges -->
-            </div>
+        <div class="modal-arabic-verse" id="modal-verse-arabic">
+          <!-- Full assembled Arabic text -->
         </div>
-    </div>
 
-    <!-- Game Over / Refill Hearts Modal -->
-    <div id="gameover-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
-        <div class="gameover-card modal-content-box">
-            <div class="gameover-mascot-icon">💔 🦸‍♂️ 💖</div>
-            <h2 class="gameover-heading">لَا تَحْزَنْ يَا بَطَلَ الْقُرْآنِ!</h2>
-            <p class="gameover-message">نَفِدَتِ الْقُلُوبُ فِي هَذِهِ الْمَحَاوَلَةِ، وَلَكِنَّ الشُّجْعَانَ يَتَعَلَّمُونَ مِنَ الْخَطَأِ وَيُحَاوِلُونَ دَائِمًا! 💪</p>
-            
-            <div class="gameover-actions">
-                <button type="button" id="btn-refill-hearts" class="modal-btn modal-btn-primary refill-btn">
-                    <span>إِعَادَةُ شَحْنِ الْقُلُوبِ وَالْمُحَاوَلَةُ ❤️❤️❤️</span>
-                </button>
-            </div>
+        <div class="modal-stats">
+          <div class="modal-stat-item highlight">
+            <div class="modal-stat-val" id="modal-points-earned">+150</div>
+            <div class="modal-stat-lbl">النقاط المكتسبة</div>
+          </div>
+          <div class="modal-stat-item">
+            <div class="modal-stat-val" id="modal-total-score">150</div>
+            <div class="modal-stat-lbl">مجموع النقاط</div>
+          </div>
+          <div class="modal-stat-item">
+            <div class="modal-stat-val" id="modal-time-taken">0:15</div>
+            <div class="modal-stat-lbl">الوقت المستغرق</div>
+          </div>
+          <div class="modal-stat-item">
+            <div class="modal-stat-val" id="modal-hints-used">0</div>
+            <div class="modal-stat-lbl">المساعدات</div>
+          </div>
         </div>
+
+        <div class="modal-actions">
+          <button class="btn btn-outline" id="modal-listen-again-btn">
+            <i class="fa-solid fa-volume-high"></i> إعادة الاستماع
+          </button>
+          <button class="btn btn-gold" id="modal-next-ayah-btn">
+            <span>الآية التالية</span> <i class="fa-solid fa-arrow-left"></i>
+          </button>
+        </div>
+      </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Floating Toast Notification -->
+    <div class="toast-notification" id="toast-notification">
+      <i class="fa-solid fa-circle-info" id="toast-icon"></i>
+      <span id="toast-message">رسالة إشعار</span>
+    </div>
+
+  </div>
+
+  <!-- Application Logic Scripts -->
+  <script src="quran-data.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
