@@ -27,6 +27,20 @@
       "lastModified" : 1788526829650
     },
     "linesOfCode" : 1633
+  }, {
+    "path" : "src\\data\\quranData.js",
+    "modificationInfo" : {
+      "contentHash" : -2088881467,
+      "lastModified" : 1790359870485
+    },
+    "linesOfCode" : 593
+  }, {
+    "path" : "vite.config.js",
+    "modificationInfo" : {
+      "contentHash" : 827156256,
+      "lastModified" : 1790359884637
+    },
+    "linesOfCode" : 10
   } ],
   "appVersion" : "1.3.0"
 }
