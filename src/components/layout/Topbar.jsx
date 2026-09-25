@@ -1,20 +1,23 @@
 import React from 'react';
+import { useGame } from '../../hooks/useGame.js';
+import { SURAH_LIST } from '../../data/quranData.js';
 
-const Topbar = ({
-  onToggleSidebar,
-  currentJuzObj,
-  surahList,
-  currentSurah,
-  onChangeSurah,
-  currentAyah,
-  totalAyahs,
-  onChangeAyah,
-  onPrevAyah,
-  onNextAyah,
-  autoPlayWordVoice,
-  onToggleWordVoice,
-  onGiveHint
-}) => {
+const Topbar = () => {
+  const {
+    setSidebarOpen,
+    currentJuzObj,
+    currentSurah,
+    changeSurah,
+    currentAyah,
+    totalAyahs,
+    changeAyah,
+    prevAyah,
+    nextAyah,
+    autoPlayWordVoice,
+    toggleWordVoice,
+    giveHint
+  } = useGame();
+
   const surahsInJuz = currentJuzObj?.surahs?.map((s) => s.number) || [];
 
   return (
@@ -24,10 +27,11 @@ const Topbar = ({
           className="mobile-toggle"
           id="mobile-menu-btn"
           title="فتح قائمة الأجزاء"
-          onClick={onToggleSidebar}
+          onClick={() => setSidebarOpen((prev) => !prev)}
         >
           <i className="fa-solid fa-bars"></i>
         </button>
+
         <div className="current-juz-tag">
           <i className="fa-solid fa-book-bookmark text-emerald"></i>
           <span className="juz-tag-label">الجزء:</span>
@@ -52,9 +56,9 @@ const Topbar = ({
                 className="styled-select"
                 aria-label="اختر السورة"
                 value={currentSurah}
-                onChange={(e) => onChangeSurah(parseInt(e.target.value, 10))}
+                onChange={(e) => changeSurah(parseInt(e.target.value, 10))}
               >
-                {surahList.map((surah) => {
+                {SURAH_LIST.map((surah) => {
                   const isInJuz = surahsInJuz.includes(surah.number);
                   return (
                     <option
@@ -83,7 +87,7 @@ const Topbar = ({
                 className="stepper-btn"
                 id="next-ayah-btn"
                 title="الآية التالية"
-                onClick={onNextAyah}
+                onClick={nextAyah}
               >
                 <i className="fa-solid fa-chevron-right"></i>
               </button>
@@ -100,14 +104,14 @@ const Topbar = ({
                   if (isNaN(val)) return;
                   if (val < 1) val = 1;
                   if (val > totalAyahs) val = totalAyahs;
-                  onChangeAyah(val);
+                  changeAyah(val);
                 }}
               />
               <button
                 className="stepper-btn"
                 id="prev-ayah-btn"
                 title="الآية السابقة"
-                onClick={onPrevAyah}
+                onClick={prevAyah}
               >
                 <i className="fa-solid fa-chevron-left"></i>
               </button>
@@ -122,7 +126,7 @@ const Topbar = ({
           className={`audio-settings-toggle ${autoPlayWordVoice ? 'active' : ''}`}
           id="word-audio-toggle"
           title="نطق الكلمة عند النقر"
-          onClick={onToggleWordVoice}
+          onClick={toggleWordVoice}
         >
           <i className="fa-solid fa-volume-high"></i>
           <span>صوت الكلمة</span>
@@ -132,7 +136,7 @@ const Topbar = ({
           className="btn-hint"
           id="hint-btn"
           title="مساعدة: وضع الكلمة التالية"
-          onClick={onGiveHint}
+          onClick={giveHint}
         >
           <i className="fa-solid fa-wand-magic-sparkles"></i>
           <span>مساعدة</span>

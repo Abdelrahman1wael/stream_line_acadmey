@@ -1,16 +1,10 @@
 import React from 'react';
+import { useGame } from '../../hooks/useGame.js';
 
-const CelebrationModal = ({
-  isOpen,
-  onClose,
-  verseArabic,
-  pointsEarned,
-  totalScore,
-  timeTaken,
-  hintsUsed,
-  onListenAgain,
-  onNextAyah
-}) => {
+const CelebrationModal = () => {
+  const { modal, closeModal, playAyahAudio, nextAyah } = useGame();
+  const { isOpen, verseArabic, pointsEarned, totalScore, timeTaken, hintsUsed } = modal;
+
   if (!isOpen) return null;
 
   return (
@@ -19,7 +13,7 @@ const CelebrationModal = ({
       id="celebration-modal"
       aria-hidden={!isOpen}
       onClick={(e) => {
-        if (e.target.id === 'celebration-modal') onClose();
+        if (e.target.id === 'celebration-modal') closeModal();
       }}
     >
       <div className="modal-card">
@@ -53,10 +47,17 @@ const CelebrationModal = ({
         </div>
 
         <div className="modal-actions">
-          <button className="btn btn-outline" id="modal-listen-again-btn" onClick={onListenAgain}>
+          <button className="btn btn-outline" id="modal-listen-again-btn" onClick={playAyahAudio}>
             <i className="fa-solid fa-volume-high"></i> إعادة الاستماع
           </button>
-          <button className="btn btn-gold" id="modal-next-ayah-btn" onClick={onNextAyah}>
+          <button
+            className="btn btn-gold"
+            id="modal-next-ayah-btn"
+            onClick={() => {
+              closeModal();
+              nextAyah();
+            }}
+          >
             <span>الآية التالية</span> <i className="fa-solid fa-arrow-left"></i>
           </button>
         </div>

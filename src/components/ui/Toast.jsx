@@ -1,6 +1,10 @@
 import React from 'react';
+import { useGame } from '../../hooks/useGame.js';
 
-const Toast = ({ show, message, type }) => {
+const Toast = () => {
+  const { toast } = useGame();
+  const { show, message, type } = toast;
+
   const iconClass =
     type === 'error'
       ? 'fa-solid fa-circle-exclamation text-danger'

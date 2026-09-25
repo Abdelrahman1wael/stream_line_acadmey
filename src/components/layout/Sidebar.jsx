@@ -1,31 +1,27 @@
 import React, { useState, useMemo } from 'react';
+import { useGame } from '../../hooks/useGame.js';
+import { JUZ_DATA, SURAH_LIST } from '../../data/quranData.js';
 
-const Sidebar = ({
-  isOpen,
-  juzList,
-  surahList,
-  currentJuz,
-  onSelectJuz,
-  onCloseMobile
-}) => {
+const Sidebar = () => {
+  const { sidebarOpen, setSidebarOpen, currentJuz, selectJuz } = useGame();
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredJuzList = useMemo(() => {
     const term = searchTerm.toLowerCase().trim();
-    if (!term) return juzList;
+    if (!term) return JUZ_DATA;
 
-    return juzList.filter((juz) => {
+    return JUZ_DATA.filter((juz) => {
       return (
         juz.number.toString().includes(term) ||
         juz.arabicName.includes(term) ||
         juz.englishName.toLowerCase().includes(term)
       );
     });
-  }, [juzList, searchTerm]);
+  }, [searchTerm]);
 
   return (
     <aside
-      className={`sidebar ${isOpen ? 'open' : ''}`}
+      className={`sidebar ${sidebarOpen ? 'open' : ''}`}
       id="sidebar"
       aria-label="قائمة الأجزاء الثلاثين"
     >
@@ -68,8 +64,8 @@ const Sidebar = ({
           </div>
         ) : (
           filteredJuzList.map((juz) => {
-            const firstSurah = surahList.find((s) => s.number === juz.startSurah);
-            const lastSurah = surahList.find((s) => s.number === juz.endSurah);
+            const firstSurah = SURAH_LIST.find((s) => s.number === juz.startSurah);
+            const lastSurah = SURAH_LIST.find((s) => s.number === juz.endSurah);
             const surahSpan =
               firstSurah && lastSurah
                 ? `سورة ${firstSurah.name} (${juz.startAyah}) ← سورة ${lastSurah.name} (${juz.endAyah})`
@@ -83,16 +79,16 @@ const Sidebar = ({
                 className={`juz-card ${isActive ? 'active' : ''}`}
                 data-juz={juz.number}
                 onClick={() => {
-                  onSelectJuz(juz.number);
-                  if (window.innerWidth <= 900 && onCloseMobile) {
-                    onCloseMobile();
+                  selectJuz(juz.number);
+                  if (window.innerWidth <= 900) {
+                    setSidebarOpen(false);
                   }
                 }}
               >
                 <div className="juz-info">
                   <div className="juz-badge">{juz.number}</div>
                   <div className="juz-meta">
-                    <span className="juz-label">الجزء {juz.number}</span>
+                    <span className="juz-label">الجزء ${juz.number}</span>
                     <span className="juz-sub">{surahSpan}</span>
                   </div>
                 </div>
