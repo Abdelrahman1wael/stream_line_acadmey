@@ -2,31 +2,248 @@
   "fileInfos" : [ {
     "path" : "app.js",
     "modificationInfo" : {
-      "contentHash" : 1321534268,
-      "lastModified" : 1788534135007
+      "contentHash" : 112244213,
+      "lastModified" : 1790099763108
     },
     "linesOfCode" : 1067
   }, {
-    "path" : "old_script.js",
-    "modificationInfo" : {
-      "contentHash" : -527482600,
-      "lastModified" : 1788505757358
-    },
-    "linesOfCode" : 3111
-  }, {
     "path" : "quran-data.js",
     "modificationInfo" : {
-      "contentHash" : 170318179,
-      "lastModified" : 1788529264117
+      "contentHash" : -1982800225,
+      "lastModified" : 1790099763111
     },
     "linesOfCode" : 600
   }, {
-    "path" : "script.js",
+    "path" : "src\\App.jsx",
     "modificationInfo" : {
-      "contentHash" : 262277267,
-      "lastModified" : 1788526829650
+      "contentHash" : 805656503,
+      "lastModified" : 1791751444566
     },
-    "linesOfCode" : 1633
+    "linesOfCode" : 86
+  }, {
+    "path" : "src\\api\\quranApi.js",
+    "modificationInfo" : {
+      "contentHash" : 898174819,
+      "lastModified" : 1790361921837
+    },
+    "linesOfCode" : 25
+  }, {
+    "path" : "src\\components\\audio\\GlobalAudioPlayer.jsx",
+    "modificationInfo" : {
+      "contentHash" : -697351399,
+      "lastModified" : 1791751360885
+    },
+    "linesOfCode" : 272
+  }, {
+    "path" : "src\\components\\azkar\\AzkarCard.jsx",
+    "modificationInfo" : {
+      "contentHash" : 529710054,
+      "lastModified" : 1791304367993
+    },
+    "linesOfCode" : 155
+  }, {
+    "path" : "src\\components\\azkar\\AzkarCelebrationModal.jsx",
+    "modificationInfo" : {
+      "contentHash" : -1523095351,
+      "lastModified" : 1791304422433
+    },
+    "linesOfCode" : 76
+  }, {
+    "path" : "src\\components\\azkar\\AzkarStatsModal.jsx",
+    "modificationInfo" : {
+      "contentHash" : 1320522611,
+      "lastModified" : 1791304411485
+    },
+    "linesOfCode" : 118
+  }, {
+    "path" : "src\\components\\azkar\\TasbihCounter.jsx",
+    "modificationInfo" : {
+      "contentHash" : 737962139,
+      "lastModified" : 1791304396351
+    },
+    "linesOfCode" : 267
+  }, {
+    "path" : "src\\components\\game\\GameBoard.jsx",
+    "modificationInfo" : {
+      "contentHash" : 1024300843,
+      "lastModified" : 1790362171173
+    },
+    "linesOfCode" : 142
+  }, {
+    "path" : "src\\components\\game\\TargetSlots.jsx",
+    "modificationInfo" : {
+      "contentHash" : -607289858,
+      "lastModified" : 1790362145448
+    },
+    "linesOfCode" : 80
+  }, {
+    "path" : "src\\components\\game\\WordBank.jsx",
+    "modificationInfo" : {
+      "contentHash" : -1823064652,
+      "lastModified" : 1790362156189
+    },
+    "linesOfCode" : 54
+  }, {
+    "path" : "src\\components\\game\\WordCard.jsx",
+    "modificationInfo" : {
+      "contentHash" : 135228500,
+      "lastModified" : 1790362132076
+    },
+    "linesOfCode" : 39
+  }, {
+    "path" : "src\\components\\layout\\Footer.jsx",
+    "modificationInfo" : {
+      "contentHash" : 13817790,
+      "lastModified" : 1791751473944
+    },
+    "linesOfCode" : 59
+  }, {
+    "path" : "src\\components\\layout\\Layout.jsx",
+    "modificationInfo" : {
+      "contentHash" : -13143653,
+      "lastModified" : 1792393452296
+    },
+    "linesOfCode" : 22
+  }, {
+    "path" : "src\\components\\layout\\Navbar.jsx",
+    "modificationInfo" : {
+      "contentHash" : 1543489833,
+      "lastModified" : 1791751463140
+    },
+    "linesOfCode" : 164
+  }, {
+    "path" : "src\\components\\layout\\Sidebar.jsx",
+    "modificationInfo" : {
+      "contentHash" : 432726607,
+      "lastModified" : 1792393393305
+    },
+    "linesOfCode" : 105
+  }, {
+    "path" : "src\\components\\layout\\Topbar.jsx",
+    "modificationInfo" : {
+      "contentHash" : 1810494681,
+      "lastModified" : 1792393416675
+    },
+    "linesOfCode" : 151
+  }, {
+    "path" : "src\\components\\prayer\\AdhanPlayerModal.jsx",
+    "modificationInfo" : {
+      "contentHash" : 313330215,
+      "lastModified" : 1791623860235
+    },
+    "linesOfCode" : 210
+  }, {
+    "path" : "src\\components\\prayer\\DailyPrayerTracker.jsx",
+    "modificationInfo" : {
+      "contentHash" : -321441119,
+      "lastModified" : 1791623786288
+    },
+    "linesOfCode" : 148
+  }, {
+    "path" : "src\\components\\prayer\\MonthlyPrayerModal.jsx",
+    "modificationInfo" : {
+      "contentHash" : -638904491,
+      "lastModified" : 1791623840164
+    },
+    "linesOfCode" : 145
+  }, {
+    "path" : "src\\components\\prayer\\PrayerHeader.jsx",
+    "modificationInfo" : {
+      "contentHash" : 692983560,
+      "lastModified" : 1791623752481
+    },
+    "linesOfCode" : 168
+  }, {
+    "path" : "src\\components\\prayer\\PrayerSettingsModal.jsx",
+    "modificationInfo" : {
+      "contentHash" : -120993619,
+      "lastModified" : 1791623825206
+    },
+    "linesOfCode" : 203
+  }, {
+    "path" : "src\\components\\prayer\\PrayerTimesList.jsx",
+    "modificationInfo" : {
+      "contentHash" : 2117795034,
+      "lastModified" : 1792402003451
+    },
+    "linesOfCode" : 157
+  }, {
+    "path" : "src\\components\\prayer\\PrayerVirtueModal.jsx",
+    "modificationInfo" : {
+      "contentHash" : 311164617,
+      "lastModified" : 1791623877391
+    },
+    "linesOfCode" : 79
+  }, {
+    "path" : "src\\components\\prayer\\QiblaCompass.jsx",
+    "modificationInfo" : {
+      "contentHash" : -1029830151,
+      "lastModified" : 1791623802762
+    },
+    "linesOfCode" : 142
+  }, {
+    "path" : "src\\components\\ui\\CelebrationModal.jsx",
+    "modificationInfo" : {
+      "contentHash" : 999105191,
+      "lastModified" : 1792394235186
+    },
+    "linesOfCode" : 71
+  }, {
+    "path" : "src\\components\\ui\\ConfettiCanvas.jsx",
+    "modificationInfo" : {
+      "contentHash" : -1716394875,
+      "lastModified" : 1790362122631
+    },
+    "linesOfCode" : 89
+  }, {
+    "path" : "src\\components\\ui\\Toast.jsx",
+    "modificationInfo" : {
+      "contentHash" : -833428863,
+      "lastModified" : 1790362095474
+    },
+    "linesOfCode" : 21
+  }, {
+    "path" : "src\\context\\AudioContext.jsx",
+    "modificationInfo" : {
+      "contentHash" : -832483275,
+      "lastModified" : 1792393368495
+    },
+    "linesOfCode" : 267
+  }, {
+    "path" : "src\\context\\GameContext.jsx",
+    "modificationInfo" : {
+      "contentHash" : -1453465177,
+      "lastModified" : 1790361997468
+    },
+    "linesOfCode" : 420
+  }, {
+    "path" : "src\\context\\LanguageContext.jsx",
+    "modificationInfo" : {
+      "contentHash" : -143358859,
+      "lastModified" : 1791303901295
+    },
+    "linesOfCode" : 54
+  }, {
+    "path" : "src\\data\\azkarData.js",
+    "modificationInfo" : {
+      "contentHash" : 1935757114,
+      "lastModified" : 1791301208130
+    },
+    "linesOfCode" : 724
+  }, {
+    "path" : "src\\data\\mp3QuranData.js",
+    "modificationInfo" : {
+      "contentHash" : 1326680939,
+      "lastModified" : 1791751310558
+    },
+    "linesOfCode" : 604
+  }, {
+    "path" : "src\\data\\prayerCities.js",
+    "modificationInfo" : {
+      "contentHash" : 1759390695,
+      "lastModified" : 1792401926916
+    },
+    "linesOfCode" : 204
   }, {
     "path" : "src\\data\\quranData.js",
     "modificationInfo" : {
@@ -34,6 +251,132 @@
       "lastModified" : 1790359870485
     },
     "linesOfCode" : 593
+  }, {
+    "path" : "src\\data\\translations.js",
+    "modificationInfo" : {
+      "contentHash" : 1730153869,
+      "lastModified" : 1792398395339
+    },
+    "linesOfCode" : 645
+  }, {
+    "path" : "src\\hooks\\useGame.js",
+    "modificationInfo" : {
+      "contentHash" : 690731302,
+      "lastModified" : 1790362012742
+    },
+    "linesOfCode" : 16
+  }, {
+    "path" : "src\\main.jsx",
+    "modificationInfo" : {
+      "contentHash" : 856812608,
+      "lastModified" : 1790360148839
+    },
+    "linesOfCode" : 10
+  }, {
+    "path" : "src\\pages\\AzkarPage.jsx",
+    "modificationInfo" : {
+      "contentHash" : 652752728,
+      "lastModified" : 1791304475580
+    },
+    "linesOfCode" : 656
+  }, {
+    "path" : "src\\pages\\GamePage.jsx",
+    "modificationInfo" : {
+      "contentHash" : -689547980,
+      "lastModified" : 1790362183740
+    },
+    "linesOfCode" : 36
+  }, {
+    "path" : "src\\pages\\HomePage.jsx",
+    "modificationInfo" : {
+      "contentHash" : -1195438378,
+      "lastModified" : 1792402439262
+    },
+    "linesOfCode" : 167
+  }, {
+    "path" : "src\\pages\\Mp3QuranPage.jsx",
+    "modificationInfo" : {
+      "contentHash" : -1557734181,
+      "lastModified" : 1791751411113
+    },
+    "linesOfCode" : 812
+  }, {
+    "path" : "src\\pages\\PrayerTimesPage.jsx",
+    "modificationInfo" : {
+      "contentHash" : 1689468778,
+      "lastModified" : 1792393503740
+    },
+    "linesOfCode" : 444
+  }, {
+    "path" : "src\\services\\audioService.js",
+    "modificationInfo" : {
+      "contentHash" : 1169858485,
+      "lastModified" : 1790361959047
+    },
+    "linesOfCode" : 71
+  }, {
+    "path" : "src\\services\\mp3QuranService.js",
+    "modificationInfo" : {
+      "contentHash" : -306973046,
+      "lastModified" : 1791751325259
+    },
+    "linesOfCode" : 185
+  }, {
+    "path" : "src\\services\\prayerService.js",
+    "modificationInfo" : {
+      "contentHash" : 1737700837,
+      "lastModified" : 1792393662380
+    },
+    "linesOfCode" : 353
+  }, {
+    "path" : "src\\services\\quranService.js",
+    "modificationInfo" : {
+      "contentHash" : -1063403702,
+      "lastModified" : 1790361937756
+    },
+    "linesOfCode" : 69
+  }, {
+    "path" : "src\\services\\scoringService.js",
+    "modificationInfo" : {
+      "contentHash" : 1481745918,
+      "lastModified" : 1790361947125
+    },
+    "linesOfCode" : 20
+  }, {
+    "path" : "src\\utils\\arabicUtils.js",
+    "modificationInfo" : {
+      "contentHash" : 225887954,
+      "lastModified" : 1790361911877
+    },
+    "linesOfCode" : 12
+  }, {
+    "path" : "src\\utils\\audioUtils.js",
+    "modificationInfo" : {
+      "contentHash" : -1700821832,
+      "lastModified" : 1791301242100
+    },
+    "linesOfCode" : 135
+  }, {
+    "path" : "src\\utils\\prayerTimesCalculator.js",
+    "modificationInfo" : {
+      "contentHash" : 1226908398,
+      "lastModified" : 1791623707631
+    },
+    "linesOfCode" : 300
+  }, {
+    "path" : "src\\utils\\storageUtils.js",
+    "modificationInfo" : {
+      "contentHash" : -288474634,
+      "lastModified" : 1790361899175
+    },
+    "linesOfCode" : 22
+  }, {
+    "path" : "src\\utils\\timeUtils.js",
+    "modificationInfo" : {
+      "contentHash" : 1837230096,
+      "lastModified" : 1790361885775
+    },
+    "linesOfCode" : 9
   }, {
     "path" : "vite.config.js",
     "modificationInfo" : {

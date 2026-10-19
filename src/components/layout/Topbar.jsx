@@ -85,11 +85,12 @@ const Topbar = () => {
             <div className="ayah-stepper">
               <button
                 className="stepper-btn"
-                id="next-ayah-btn"
-                title="الآية التالية"
-                onClick={nextAyah}
+                id="prev-ayah-btn"
+                title="الآية السابقة"
+                aria-label="الآية السابقة"
+                onClick={prevAyah}
               >
-                <i className="fa-solid fa-chevron-right"></i>
+                <i className="fa-solid fa-minus"></i>
               </button>
               <input
                 type="number"
@@ -109,11 +110,12 @@ const Topbar = () => {
               />
               <button
                 className="stepper-btn"
-                id="prev-ayah-btn"
-                title="الآية السابقة"
-                onClick={prevAyah}
+                id="next-ayah-btn"
+                title="الآية التالية"
+                aria-label="الآية التالية"
+                onClick={nextAyah}
               >
-                <i className="fa-solid fa-chevron-left"></i>
+                <i className="fa-solid fa-plus"></i>
               </button>
             </div>
             <span className="ayah-total-label" id="ayah-total-label">

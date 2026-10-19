@@ -88,7 +88,7 @@ const Sidebar = () => {
                 <div className="juz-info">
                   <div className="juz-badge">{juz.number}</div>
                   <div className="juz-meta">
-                    <span className="juz-label">الجزء ${juz.number}</span>
+                    <span className="juz-label">الجزء {juz.number}</span>
                     <span className="juz-sub">{surahSpan}</span>
                   </div>
                 </div>

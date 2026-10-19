@@ -1,93 +1,162 @@
-import React from 'react';
-import heroImage from '../assets/academy_hero.jpg';
+import React, { useState } from 'react';
+import humanBodyImage from '../assets/human_body_features.jpg';
+import { useLanguage } from '../context/LanguageContext.jsx';
 
-const HomePage = ({ onNavigateToGame }) => {
+const HomePage = ({ onNavigateToGame, onNavigateToAzkar, onNavigateToPrayer, onNavigateToMp3Quran }) => {
+  const { t, isRTL } = useLanguage();
+  const [selectedPart, setSelectedPart] = useState('heart');
+
+  const bodyParts = [
+    {
+      id: 'mind',
+      organ: t('bodyMindTitle'),
+      featureName: t('bodyMindFeature'),
+      desc: t('bodyMindDesc'),
+      icon: 'fa-solid fa-brain',
+      badge: t('gameCardTag'),
+      colorTheme: 'green',
+      action: onNavigateToGame,
+      btnLabel: t('btnEnterGame'),
+      coords: { top: '12%', left: '50%' }, // Head & Forehead
+      connectorSide: 'left',
+    },
+    {
+      id: 'ears',
+      organ: t('bodyEarsTitle'),
+      featureName: t('bodyEarsFeature'),
+      desc: t('bodyEarsDesc'),
+      icon: 'fa-solid fa-headphones',
+      badge: t('mp3quranCardTag'),
+      colorTheme: 'blue',
+      action: onNavigateToMp3Quran,
+      btnLabel: t('btnEnterMp3Quran'),
+      coords: { top: '16%', left: '44%' }, // Ears / Head side
+      connectorSide: 'left',
+    },
+    {
+      id: 'heart',
+      organ: t('bodyHeartTitle'),
+      featureName: t('bodyHeartFeature'),
+      desc: t('bodyHeartDesc'),
+      icon: 'fa-solid fa-heart-pulse',
+      badge: t('azkarCardTag'),
+      colorTheme: 'amber',
+      action: onNavigateToAzkar,
+      btnLabel: t('btnEnterAzkar'),
+      coords: { top: '33%', left: '50%' }, // Glowing Heart & Chest
+      connectorSide: 'right',
+    },
+    {
+      id: 'limbs',
+      organ: t('bodyLimbsTitle'),
+      featureName: t('bodyLimbsFeature'),
+      desc: t('bodyLimbsDesc'),
+      icon: 'fa-solid fa-mosque',
+      badge: t('prayerCardTag'),
+      colorTheme: 'teal',
+      action: onNavigateToPrayer,
+      btnLabel: t('btnEnterPrayer'),
+      coords: { top: '49%', left: '50%' }, // Folded Hands at waist
+      connectorSide: 'right',
+    },
+  ];
+
   return (
     <div className="home-page-container">
       {/* Hero Section Dedicated to: Name, Description & Image */}
       <section className="home-hero-section">
         <div className="hero-grid-layout">
           
-          {/* Right Column (in RTL): Name, Description & CTA */}
+          {/* Main Column: Name, Description & CTA */}
           <div className="hero-text-content">
             <div className="hero-academy-tag">
               <span className="pulse-dot"></span>
               <i className="fa-solid fa-graduation-cap"></i>
-              <span>أكاديمية ستريم لاين لتعليم القرآن الكريم</span>
+              <span>{t('academyTag')}</span>
             </div>
 
             <h1 className="hero-main-title">
-              أَكَادِيمِيَّةُ سِتْرِيمْ لَايْن
-              <span className="hero-title-sub">لِتَرْتِيبِ وَتَدَبُّرِ كَلِمَاتِ القُرْآنِ العَظِيمِ</span>
+              {t('heroMainTitle')}
+              <span className="hero-title-sub">{t('heroTitleSub')}</span>
             </h1>
 
             <p className="hero-main-description">
-              مرحباً بكم في <strong>أكاديمية ستريم لاين</strong>، المنصة الرائدة التي تقدم تجربة تعليمية فريدة
-              تجمع بين <strong>ترتيب كلمات الآيات التفاعلي</strong> والتلاوة الصوتية النقية لكبار القراء.
-              صُممت منصتنا لمساعدة الطلاب والحفاظ على تثبيت مواضع الكلمات في الذاكرة عبر أسلوب تفاعلي ممتع
-              يشمل جميع الأجزاء الثلاثين من القرآن الكريم.
+              {t('heroDesc')}
             </p>
 
             <div className="hero-cta-group">
-              <button className="btn-go-to-game" onClick={onNavigateToGame}>
-                <i className="fa-solid fa-play"></i>
-                <span>انتقل إلى صفحة لعبة ترتيب الآيات</span>
-                <i className="fa-solid fa-arrow-left"></i>
-              </button>
-
               <div className="hero-quick-stats">
                 <div className="quick-stat-item">
-                  <strong>30</strong>
-                  <span>جزءاً كاملاً</span>
+                  <strong>240+</strong>
+                  <span>{t('statReciters')}</span>
+                </div>
+                <div className="quick-stat-divider"></div>
+                <div className="quick-stat-item">
+                  <strong>177+</strong>
+                  <span>{t('statRadios')}</span>
                 </div>
                 <div className="quick-stat-divider"></div>
                 <div className="quick-stat-item">
                   <strong>114</strong>
-                  <span>سورة كريمة</span>
+                  <span>{t('statSurah')}</span>
                 </div>
                 <div className="quick-stat-divider"></div>
                 <div className="quick-stat-item">
-                  <strong>100%</strong>
-                  <span>تلاوة صوتية متزامنة</span>
+                  <strong>70+</strong>
+                  <span>{t('statDuas')}</span>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Left Column (in RTL): Hero Image */}
-          <div className="hero-image-wrapper">
-            <div className="hero-image-card">
-              <img
-                src={heroImage}
-                alt="أكاديمية ستريم لاين لتعليم القرآن الكريم"
-                className="hero-featured-image"
-              />
-              <div className="image-overlay-caption">
-                <i className="fa-solid fa-book-open-reader"></i>
-                <span>بيئة تعليمية قرآنية تفاعلية حديثة</span>
+          {/* Interactive Spiritual Body Figure (Replaces Old Hero Image) */}
+          <div className="hero-figure-wrapper">
+            <div className="human-figure-card hero-figure-card">
+              <div className="human-figure-inner">
+                <img
+                  src={humanBodyImage}
+                  alt={t('showcaseBadge')}
+                  className="human-figure-img"
+                />
+                <div className="figure-ambient-glow"></div>
               </div>
+
+              {/* 4 Interactive Body Part Hotspots */}
+              {bodyParts.map(part => (
+                <div
+                  key={part.id}
+                  className={`body-hotspot-pin pin-${part.id} theme-${part.colorTheme} ${selectedPart === part.id ? 'is-active' : ''}`}
+                  style={{ top: part.coords.top, left: part.coords.left }}
+                  onMouseEnter={() => setSelectedPart(part.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    part.action();
+                  }}
+                  role="button"
+                  tabIndex={0}
+                  title={`${part.organ} - ${part.featureName}`}
+                >
+                  <span className="hotspot-pulse-ring"></span>
+                  <button className="hotspot-core-btn" aria-label={part.organ}>
+                    <i className={part.icon}></i>
+                  </button>
+
+                  {/* Hotspot Floating Callout Button */}
+                  <div className={`hotspot-callout-pill callout-${part.connectorSide}`}>
+                    <span className="callout-organ">{part.organ}</span>
+                    <span className="callout-feature">{part.featureName}</span>
+                    <i className={`fa-solid ${isRTL ? 'fa-arrow-left' : 'fa-arrow-right'} callout-icon`}></i>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="hero-figure-caption">
+              <i className="fa-solid fa-child-reaching text-gold"></i>
+              <span>{t('showcaseSubtitle')}</span>
             </div>
           </div>
 
-        </div>
-      </section>
-
-      {/* Feature Showcase Banner: Introducing the Game Page */}
-      <section className="game-preview-banner">
-        <div className="preview-banner-content">
-          <div className="preview-badge">
-            <i className="fa-solid fa-crown"></i>
-            <span>ميزة الأكاديمية البارزة</span>
-          </div>
-          <h2>لعبة ترتيب كلمات القرآن الكريم التفاعلية</h2>
-          <p>
-            تصفح جميع أجزاء وسور القرآن، واستمع للتلاوة بصوت الشيخ مشاري العفاسي، ونطق كل كلمة مفردة
-            مع نظام النقاط والرتب التنافسية في صفحة اللعبة المخصصة.
-          </p>
-          <button className="btn-banner-enter" onClick={onNavigateToGame}>
-            <i className="fa-solid fa-gamepad"></i>
-            <span>دخول صفحة اللعبة الآن</span>
-          </button>
         </div>
       </section>
     </div>
@@ -95,3 +164,4 @@ const HomePage = ({ onNavigateToGame }) => {
 };
 
 export default HomePage;
+

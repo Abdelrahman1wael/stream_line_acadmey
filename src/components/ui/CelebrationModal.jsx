@@ -1,8 +1,10 @@
 import React from 'react';
 import { useGame } from '../../hooks/useGame.js';
+import { useLanguage } from '../../context/LanguageContext.jsx';
 
 const CelebrationModal = () => {
   const { modal, closeModal, playAyahAudio, nextAyah } = useGame();
+  const { isRTL } = useLanguage();
   const { isOpen, verseArabic, pointsEarned, totalScore, timeTaken, hintsUsed } = modal;
 
   if (!isOpen) return null;
@@ -58,7 +60,7 @@ const CelebrationModal = () => {
               nextAyah();
             }}
           >
-            <span>الآية التالية</span> <i className="fa-solid fa-arrow-left"></i>
+            <span>الآية التالية</span> <i className={`fa-solid ${isRTL ? 'fa-arrow-left' : 'fa-arrow-right'}`}></i>
           </button>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from './Navbar.jsx';
 import Footer from './Footer.jsx';
+import GlobalAudioPlayer from '../audio/GlobalAudioPlayer.jsx';
 
 const Layout = ({ currentPage, onNavigate, score, children }) => {
   return (
@@ -11,7 +12,9 @@ const Layout = ({ currentPage, onNavigate, score, children }) => {
         {children}
       </main>
 
-      {currentPage === 'home' && <Footer onNavigate={onNavigate} />}
+      {currentPage !== 'game' && <Footer onNavigate={onNavigate} />}
+
+      <GlobalAudioPlayer />
     </div>
   );
 };
